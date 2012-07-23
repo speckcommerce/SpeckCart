@@ -1,13 +1,22 @@
 <?php
 
 namespace SpeckCart\Entity;
+use \Iterator;
+use \Countable;
 
-class Cart implements CartInterface
+class Cart implements CartInterface, Iterator, Countable
 {
     /**
      * @var array
      */
     protected $items = array();
+    
+    /**
+     * index for looping
+     * 
+     * @var int
+     */
+    protected $itemIndex = 0;
 
     /**
      * constructor
@@ -43,5 +52,35 @@ class Cart implements CartInterface
     public function getItems()
     {
         return $this->items;
+    }
+
+    public function count()
+    {
+        return count($this->items);
+    }
+
+    public function current()
+    {
+        return $this->items[$this->itemIndex];
+    }
+
+    public function key()
+    {
+        return $this->itemIndex;
+    }
+
+    public function next()
+    {
+        $this->itemIndex++;
+    }
+
+    public function rewind()
+    {
+        $this->itemIndex = 0;
+    }
+
+    public function valid()
+    {
+        return isset($this->items[$this->itemIndex]);;
     }
 }
