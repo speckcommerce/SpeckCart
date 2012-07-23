@@ -12,6 +12,7 @@ class CartItem implements CartItemInterface
     protected $price;
     protected $quantity;
     protected $addedTime;
+    protected $tax = 0;
 
     public function getCartItemId()
     {
@@ -87,6 +88,18 @@ class CartItem implements CartItemInterface
 
     public function getExtPrice()
     {
-        return $this->getPrice() * $this->getQuantity();
+        return ($this->getPrice() + $this->getTax()) * $this->getQuantity();
     }
+    
+    public function getTax() 
+    {
+        return $this->tax;
+    }
+    
+    public function setTax($tax)
+    {
+        $this->tax = $tax;
+        return $this;
+    }
+    
 }
