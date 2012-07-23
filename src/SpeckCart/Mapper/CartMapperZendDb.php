@@ -7,7 +7,6 @@ use SpeckCart\Entity\CartInterface;
 
 use Zend\Db\Sql\Select;
 use Zend\Db\Sql\Where;
-use Zend\Stdlib\Hydrator\ClassMethods;
 
 use ZfcBase\Mapper\AbstractDbMapper;
 
@@ -19,7 +18,7 @@ class CartMapperZendDb extends AbstractDbMapper
     public function __construct()
     {
         $this->setEntityPrototype(new Cart);
-        $this->setHydrator(new ClassMethods(true));
+        $this->setHydrator(new CartHydrator);
     }
 
     public function findById($cartId)

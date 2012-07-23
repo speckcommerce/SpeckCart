@@ -38,6 +38,7 @@ class Bootstrap
                 'config_glob_paths'    => array(
                     __DIR__ . '/config/autoload/{,*.}{global,local}.php',
                 ),
+                'config_cache_enabled' => false,
                 'module_paths' => explode(PATH_SEPARATOR, $zf2ModulesPaths),
             ),
         );
