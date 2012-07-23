@@ -11,6 +11,7 @@ use Zend\Session\Container;
 class CartService implements CartServiceInterface
 {
     protected $sessionManager;
+    protected $cartMapper;
 
     public function getSessionCart()
     {
@@ -57,6 +58,17 @@ class CartService implements CartServiceInterface
     public function setSessionManager($sessionManager)
     {
         $this->sessionManager = $sessionManager;
+        return $this;
+    }
+
+    public function getCartMapper()
+    {
+        return $this->cartMapper;
+    }
+
+    public function setCartMapper($cartMapper)
+    {
+        $this->cartMapper = $cartMapper;
         return $this;
     }
 }

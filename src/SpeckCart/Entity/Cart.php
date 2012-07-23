@@ -3,17 +3,28 @@
 namespace SpeckCart\Entity;
 use \Iterator;
 use \Countable;
+use \DateTime;
 
 class Cart implements CartInterface, Iterator, Countable
 {
     /**
+     * @var int
+     */
+    protected $cartId = 0;
+
+    /**
+     * @var DateTime
+     */
+    protected $createdTime;
+
+    /**
      * @var array
      */
     protected $items = array();
-    
+
     /**
      * index for looping
-     * 
+     *
      * @var int
      */
     protected $itemIndex = 0;
@@ -26,6 +37,28 @@ class Cart implements CartInterface, Iterator, Countable
     public function __construct(array $items = array())
     {
         $this->setItems($items);
+    }
+
+    public function getCartId()
+    {
+        return $this->cartId;
+    }
+
+    public function setCartId($cartId)
+    {
+        $this->cartId = $cartId;
+        return $this;
+    }
+
+    public function getCreatedTime()
+    {
+        return $this->createdTime;
+    }
+
+    public function setCreatedTime(DateTime $time)
+    {
+        $this->createdTime = $time;
+        return $this;
     }
 
     public function addItem(CartItemInterface $item)

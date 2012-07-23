@@ -14,6 +14,25 @@ use Zend\Mvc\ModuleRouteListener;
 
 class Module implements AutoloaderProviderInterface
 {
+    public function getServiceConfig()
+    {
+        return array(
+            'factories' => array(
+                'SpeckCart\Service\CartService' => function($sm) {
+                    $service = new Service\CartService;
+                    $service->setMapper($sm->get('SpeckCart\Mapper\CartMapperZendDb'));
+                    return $service;
+                },
+
+                'SpeckCart\Mapper\CartMapperZendDb' => function($sm) {
+                    $mapper = new Mapper\CartMapperZendDb;
+                    $mapper->setDbAdapter($sm->get('speckcart_db_adapter'));
+                    return $mapper;
+                },
+            ),
+        );
+    }
+
     public function getAutoloaderConfig()
     {
         return array(
