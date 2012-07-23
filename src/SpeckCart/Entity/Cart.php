@@ -19,6 +19,28 @@ class Cart implements CartInterface
         $this->setItems($items);
     }
 
+    public function getCartId()
+    {
+        return $this->cartId;
+    }
+
+    public function setCartId($cartId)
+    {
+        $this->cartId = $cartId;
+        return $this;
+    }
+
+    public function getCreatedTime()
+    {
+        return $this->createdTime;
+    }
+
+    public function setCreatedTime(DateTime $time)
+    {
+        $this->createdTime = $time;
+        return $this;
+    }
+
     public function addItem(CartItemInterface $item)
     {
         $this->items[ $item->getCartItemId() ] = $item;
