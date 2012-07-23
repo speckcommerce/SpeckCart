@@ -11,7 +11,7 @@ use Zend\Stdlib\Hydrator\ClassMethods;
 
 use ZfcBase\Mapper\AbstractDbMapper;
 
-class CartMapper extends AbstractDbMapper
+class CartMapperZendDb extends AbstractDbMapper
 {
     protected $tableName = 'cart';
     protected $cartIdField = 'cart_id';
