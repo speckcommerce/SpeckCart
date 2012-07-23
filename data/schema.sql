@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS `cart_item` (
   `cart_id` int(11) NOT NULL,
   `quantity` int(11) NOT NULL,
   `price` decimal(15,5) DEFAULT NULL,
+  `tax` decimal(15,5) DEFAULT NULL,
   `added_time` datetime DEFAULT NULL,
   PRIMARY KEY (`item_id`),
   KEY `cart_id` (`cart_id`)

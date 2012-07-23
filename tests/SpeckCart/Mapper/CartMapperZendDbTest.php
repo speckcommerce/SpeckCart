@@ -13,6 +13,7 @@ class CartMapperZendDbTest extends PHPUnit_Framework_TestCase
     {
         $this->mapper = Bootstrap::getServiceManager()->get('SpeckCart\Mapper\CartMapperZendDb');
         $this->mapper->getDbAdapter()->query('TRUNCATE cart', 'execute');
+        $this->mapper->getDbAdapter()->query('TRUNCATE cart_item', 'execute');
     }
 
     public function testPersistInsert()
@@ -22,8 +23,8 @@ class CartMapperZendDbTest extends PHPUnit_Framework_TestCase
         $cart = new Cart;
         $cart->setCreatedTime($time);
 
-        $this->mapper->persist($cart);
-        $this->mapper->persist($cart);
+        $result1 = $this->mapper->persist($cart);
+        $this->assertEquals(1, $result1->getCartId());
 
         $cart = $this->mapper->findById(1);
         $this->assertEquals(1, $cart->getCartId());
@@ -37,6 +38,7 @@ class CartMapperZendDbTest extends PHPUnit_Framework_TestCase
         $cart = new Cart;
         $cart->setCartId(1);
         $cart->setCreatedTime($time);
+        $this->mapper->persist($cart);
 
         $cart = $this->mapper->findById(1);
         $this->assertEquals(1, $cart->getCartId());
@@ -47,8 +49,5 @@ class CartMapperZendDbTest extends PHPUnit_Framework_TestCase
     {
         $cart = $this->mapper->findById(1);
         $this->assertEquals(1, $cart->getCartId());
-
-        $cart = $this->mapper->findById(2);
-        $this->assertEquals(2, $cart->getCartId());
     }
 }
