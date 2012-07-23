@@ -72,7 +72,7 @@ interface CartItemInterface
      * @param float price
      * @return CartItemInterface
      */
-    public function setPrice();
+    public function setPrice($price);
 
     /**
      * Get the number of items in the cart
