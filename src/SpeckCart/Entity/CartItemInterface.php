@@ -110,4 +110,19 @@ interface CartItemInterface
      * @return float
      */
     public function getExtPrice();
+    
+    /**
+    * Get the tax associated for this item
+    *
+    * @return float
+    */
+    public function getTax();
+    
+    /**
+    * set the tax for this item
+    *
+    * @param float $tax Tax Value
+    * @return CartItemInterface
+    **/
+    public function setTax($tax);
 }
