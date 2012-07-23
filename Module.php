@@ -20,12 +20,19 @@ class Module implements AutoloaderProviderInterface
             'factories' => array(
                 'SpeckCart\Service\CartService' => function($sm) {
                     $service = new Service\CartService;
-                    $service->setMapper($sm->get('SpeckCart\Mapper\CartMapperZendDb'));
+                    $service->setItemMapper($sm->get('SpeckCart\Mapper\CartItemMapperZendDb'));
+                    $service->setCartMapper($sm->get('SpeckCart\Mapper\CartMapperZendDb'));
                     return $service;
                 },
 
                 'SpeckCart\Mapper\CartMapperZendDb' => function($sm) {
                     $mapper = new Mapper\CartMapperZendDb;
+                    $mapper->setDbAdapter($sm->get('speckcart_db_adapter'));
+                    return $mapper;
+                },
+
+                'SpeckCart\Mapper\CartItemMapperZendDb' => function($sm) {
+                    $mapper = new Mapper\CartItemMapperZendDb;
                     $mapper->setDbAdapter($sm->get('speckcart_db_adapter'));
                     return $mapper;
                 },

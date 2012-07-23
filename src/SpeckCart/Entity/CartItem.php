@@ -90,16 +90,15 @@ class CartItem implements CartItemInterface
     {
         return ($this->getPrice() + $this->getTax()) * $this->getQuantity();
     }
-    
-    public function getTax() 
+
+    public function getTax()
     {
         return $this->tax;
     }
-    
+
     public function setTax($tax)
     {
         $this->tax = $tax;
         return $this;
     }
-    
 }

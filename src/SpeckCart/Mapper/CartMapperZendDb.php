@@ -10,7 +10,7 @@ use Zend\Db\Sql\Where;
 
 use ZfcBase\Mapper\AbstractDbMapper;
 
-class CartMapperZendDb extends AbstractDbMapper
+class CartMapperZendDb extends AbstractDbMapper implements CartMapperInterface
 {
     protected $tableName = 'cart';
     protected $cartIdField = 'cart_id';
@@ -37,11 +37,14 @@ class CartMapperZendDb extends AbstractDbMapper
     {
         if ($cart->getCartId() > 0) {
             $where = new Where;
-            $where->equalTo($this->cartIdField, $cartId);
+            $where->equalTo($this->cartIdField, $cart->getCartId());
 
             $this->update($cart, $where, $this->tableName);
         } else {
-            $this->insert($cart, $this->tableName);
+            $result = $this->insert($cart, $this->tableName);
+            $cart->setCartId($result->getGeneratedValue());
         }
+
+        return $cart;
     }
 }

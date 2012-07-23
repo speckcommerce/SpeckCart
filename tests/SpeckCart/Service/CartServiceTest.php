@@ -2,21 +2,31 @@
 
 namespace SpeckCartTest\Service;
 
+use Bootstrap;
 use PHPUnit_Framework_TestCase;
 use SpeckCart\Entity\CartItem;
 use SpeckCart\Service\CartService;
 use SpeckCartTest\TestAsset\SessionManager;
+use Zend\Session\Container;
 
 require_once 'SpeckCart/TestAsset/SessionManager.php';
 
 class CartServiceTest extends PHPUnit_Framework_TestCase
 {
-    public function setUp()
+    public function __construct()
     {
-        $this->cartService = new CartService;
+        $this->cartService = Bootstrap::getServiceManager()->get('SpeckCart\Service\CartService');
         $this->sessionManager = new SessionManager;
 
         $this->cartService->setSessionManager($this->sessionManager);
+    }
+
+    public function setUp()
+    {
+        $this->cartService->getCartMapper()->getDbAdapter()->query('TRUNCATE cart', 'execute');
+        $this->cartService->getCartMapper()->getDbAdapter()->query('TRUNCATE cart_item', 'execute');
+        $container = new Container('speckcart', $this->sessionManager);
+        unset($container->cartId);
     }
 
     public function testInitialCartIsEmpty()
@@ -28,8 +38,6 @@ class CartServiceTest extends PHPUnit_Framework_TestCase
     public function testAddToCart()
     {
         $item = new CartItem;
-        $item->setCartItemId(1);
-
         $return = $this->cartService->addItemToCart($item);
 
         // check fluent interface
@@ -40,13 +48,12 @@ class CartServiceTest extends PHPUnit_Framework_TestCase
 
         // check that it's the same item still
         $itemAddedToCart = $this->cartService->getSessionCart()->getItems();
-        $this->assertSame($item, $itemAddedToCart[1]);
+        $this->assertEquals($item->getCartItemId(), $itemAddedToCart[1]->getCartItemId());
     }
 
     public function testDuplicateItemsAreNotAdded()
     {
         $item = new CartItem;
-        $item->setCartItemId(2);
 
         $this->cartService->addItemToCart($item);
         $this->cartService->addItemToCart($item);
@@ -57,7 +64,6 @@ class CartServiceTest extends PHPUnit_Framework_TestCase
     public function testRemoveFromCart()
     {
         $item = new CartItem;
-        $item->setCartItemId(1);
 
         $return = $this->cartService->addItemToCart($item);
 
