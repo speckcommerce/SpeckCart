@@ -21,6 +21,14 @@ interface CartInterface
     public function removeItem($itemId);
 
     /**
+     * Set the items in the cart
+     *
+     * @param array items
+     * @return CartInterface
+     */
+    public function setItems(array $items);
+
+    /**
      * Get all the items in this cart
      *
      * @return array
