@@ -2,8 +2,20 @@
 
 namespace SpeckCart\Entity;
 
+use \DateTime;
+
 class Cart implements CartInterface
 {
+    /**
+     * @var int
+     */
+    protected $cartId = 0;
+
+    /**
+     * @var DateTime
+     */
+    protected $createdTime;
+
     /**
      * @var array
      */
