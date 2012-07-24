@@ -13,6 +13,22 @@ class CartItem implements CartItemInterface
     protected $quantity;
     protected $addedTime;
     protected $tax = 0;
+    protected $parentItemId = 0;
+
+    protected $children = array();
+
+    public function __construct(array $config = array())
+    {
+        if (count($config)) {
+            $this->cartItemId   = isset($config['item_id'])        ? $config['item_id']        : null;
+            $this->cartId       = isset($config['cart_id'])        ? $config['cart_id']        : null;
+            $this->price        = isset($config['price'])          ? $config['price']          : null;
+            $this->quantity     = isset($config['quantity'])       ? $config['quantity']       : null;
+            $this->addedTime    = isset($config['added_time'])     ? $config['added_time']     : null;
+            $this->tax          = isset($config['tax'])            ? $config['tax']            : null;
+            $this->parentItemId = isset($config['parent_item_id']) ? $config['parent_item_id'] : 0;
+        }
+    }
 
     public function getCartItemId()
     {
@@ -99,6 +115,34 @@ class CartItem implements CartItemInterface
     public function setTax($tax)
     {
         $this->tax = $tax;
+        return $this;
+    }
+
+    public function getParentItemId()
+    {
+        return $this->parentItemId;
+    }
+
+    public function setParentItemId($itemId)
+    {
+        $this->parentItemId = $itemId;
+        return $this;
+    }
+
+    public function getChildren()
+    {
+        return $this->children;
+    }
+
+    public function setChildren(array $children)
+    {
+        $this->children = $children;
+        return $this;
+    }
+
+    public function addChild(CartItemInterface $child)
+    {
+        $this->children[ $child->getCartItemId() ] = $child;
         return $this;
     }
 }

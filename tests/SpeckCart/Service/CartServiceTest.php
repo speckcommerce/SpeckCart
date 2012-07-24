@@ -75,4 +75,42 @@ class CartServiceTest extends PHPUnit_Framework_TestCase
         // ensure it was removed
         $this->assertEquals(0, count($this->cartService->getSessionCart()->getItems()));
     }
+
+    public function testUnflatten()
+    {
+        $items = array(
+            new CartItem(array(
+                'item_id' => 30,
+            )),
+            new CartItem(array(
+                'item_id' => 1,
+            )),
+            new CartItem(array(
+                'item_id' => 2,
+                'parent_item_id' => 1
+            )),
+            new CartItem(array(
+                'item_id' => 3,
+                'parent_item_id' => 1
+            )),
+            new CartItem(array(
+                'item_id' => 4,
+                'parent_item_id' => 2
+            )),
+            new CartItem(array(
+                'item_id' => 5,
+                'parent_item_id' => 30
+            ))
+        );
+
+        $items = $this->cartService->unflatten($items);
+
+        $children = $items[1]->getChildren();
+        $this->assertEquals(2, count($children));
+        $this->assertEquals(1, count($children[2]->getChildren()));
+        $this->assertEquals(0, count($children[3]->getChildren()));
+
+        $children = $items[30]->getChildren();
+        $this->assertEquals(1, count($children));
+    }
 }
