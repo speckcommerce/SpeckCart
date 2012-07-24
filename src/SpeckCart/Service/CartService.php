@@ -14,6 +14,18 @@ class CartService implements CartServiceInterface
     protected $cartMapper;
     protected $itemMapper;
 
+    public function createSessionCart()
+    {
+        $container = new Container('speckcart', $this->getSessionManager());
+
+        $cart = new Cart;
+        $cart->setCreatedTime(new \DateTime());
+
+        $cart = $this->cartMapper->persist($cart);
+        $container->cartId = $cart->getCartId();
+        return $cart;
+    }
+
     public function getSessionCart()
     {
         $container = new Container('speckcart', $this->getSessionManager());
@@ -21,17 +33,15 @@ class CartService implements CartServiceInterface
         if (!isset($container->cartId)) {
             $cart = new Cart;
             $cart->setCreatedTime(new \DateTime());
-
-            $cart = $this->cartMapper->persist($cart);
-            $container->cartId = $cart->getCartId();
         } else {
             $cart = $this->cartMapper->findById($container->cartId);
+
+            $items = $this->itemMapper->findByCartId($cart->getCartId());
+            $items = $this->unflatten($items);
+
+            $cart->setItems($items);
         }
 
-        $items = $this->itemMapper->findByCartId($cart->getCartId());
-        $items = $this->unflatten($items);
-
-        $cart->setItems($items);
         return $cart;
     }
 
@@ -57,7 +67,7 @@ class CartService implements CartServiceInterface
     public function addItemToCart(CartItemInterface $item, CartInterface $cart = null)
     {
         if ($cart === null) {
-            $cart = $this->getSessionCart();
+            $cart = $this->createSessionCart();
         }
 
         $item->setCartId($cart->getCartId())
