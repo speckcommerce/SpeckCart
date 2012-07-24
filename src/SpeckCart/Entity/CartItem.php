@@ -8,6 +8,7 @@ class CartItem implements CartItemInterface
 {
     protected $cartItemId;
     protected $cartId;
+    protected $description;
     protected $performanceIndicators;
     protected $price;
     protected $quantity;
@@ -22,6 +23,7 @@ class CartItem implements CartItemInterface
         if (count($config)) {
             $this->cartItemId   = isset($config['item_id'])        ? $config['item_id']        : null;
             $this->cartId       = isset($config['cart_id'])        ? $config['cart_id']        : null;
+            $this->description  = isset($config['description'])    ? $config['description']    : null;
             $this->price        = isset($config['price'])          ? $config['price']          : null;
             $this->quantity     = isset($config['quantity'])       ? $config['quantity']       : null;
             $this->addedTime    = isset($config['added_time'])     ? $config['added_time']     : null;
@@ -49,6 +51,17 @@ class CartItem implements CartItemInterface
     public function setCartId($cartId)
     {
         $this->cartId = $cartId;
+        return $this;
+    }
+
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    public function setDescription($description)
+    {
+        $this->description = $description;
         return $this;
     }
 
