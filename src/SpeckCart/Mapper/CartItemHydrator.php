@@ -13,6 +13,7 @@ class CartItemHydrator implements HydratorInterface
     {
         $result = array(
             'cart_id'                => $object->getCartId(),
+            'description'            => $object->getDescription(),
             'price'                  => $object->getPrice() ?: 0.00,
             'quantity'               => $object->getQuantity() ?: 0,
             'tax'                    => $object->getTax() ?: 0,
@@ -34,6 +35,7 @@ class CartItemHydrator implements HydratorInterface
     {
         $object->setCartItemId($data['item_id'])
             ->setCartId($data['cart_id'])
+            ->setDescription($data['description'])
             ->setPrice($data['price'])
             ->setQuantity($data['quantity'])
             ->setTax($data['tax'])
