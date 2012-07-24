@@ -7,10 +7,12 @@ CREATE TABLE IF NOT EXISTS `cart` (
 CREATE TABLE IF NOT EXISTS `cart_item` (
   `item_id` int(11) NOT NULL AUTO_INCREMENT,
   `cart_id` int(11) NOT NULL,
+  `description` varchar(255) NOT NULL,
   `quantity` int(11) NOT NULL,
   `price` decimal(15,5) DEFAULT NULL,
   `tax` decimal(15,5) DEFAULT NULL,
   `added_time` datetime DEFAULT NULL,
+  `parent_item_id` int(11) DEFAULT 0,
   PRIMARY KEY (`item_id`),
   KEY `cart_id` (`cart_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;

@@ -110,14 +110,14 @@ interface CartItemInterface
      * @return float
      */
     public function getExtPrice();
-    
+
     /**
     * Get the tax associated for this item
     *
     * @return float
     */
     public function getTax();
-    
+
     /**
     * set the tax for this item
     *
@@ -125,4 +125,27 @@ interface CartItemInterface
     * @return CartItemInterface
     **/
     public function setTax($tax);
+
+    /**
+     * get the children of this line item
+     *
+     * @return array
+     */
+    public function getChildren();
+
+    /**
+     * set the children of this line item
+     *
+     * @param array $children
+     * @return CartItemInterface
+     */
+    public function setChildren(array $children);
+
+    /**
+     * add a child to this line item
+     *
+     * @param CartItemInterface $child
+     * @return CartItemInterface
+     */
+    public function addChild(CartItemInterface $child);
 }
