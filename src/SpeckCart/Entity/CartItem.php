@@ -19,14 +19,14 @@ class CartItem implements CartItemInterface
 
     public function __construct(array $config = array())
     {
-        if (count($array)) {
-            $this->cartItemId   = !isset($config['item_id'])        ?: $config['item_id'];
-            $this->cartId       = !isset($config['cart_id'])        ?: $config['cart_id'];
-            $this->price        = !isset($config['price'])          ?: $config['price'];
-            $this->quantity     = !isset($config['quantity'])       ?: $config['quantity'];
-            $this->addedTime    = !isset($config['added_time'])     ?: $config['added_time'];
-            $this->tax          = !isset($config['tax'])            ?: $config['tax'];
-            $this->parentItemId = !isset($config['parent_item_id']) ?: $config['parent_item_id'];
+        if (count($config)) {
+            $this->cartItemId   = isset($config['item_id'])        ? $config['item_id']        : null;
+            $this->cartId       = isset($config['cart_id'])        ? $config['cart_id']        : null;
+            $this->price        = isset($config['price'])          ? $config['price']          : null;
+            $this->quantity     = isset($config['quantity'])       ? $config['quantity']       : null;
+            $this->addedTime    = isset($config['added_time'])     ? $config['added_time']     : null;
+            $this->tax          = isset($config['tax'])            ? $config['tax']            : null;
+            $this->parentItemId = isset($config['parent_item_id']) ? $config['parent_item_id'] : 0;
         }
     }
 

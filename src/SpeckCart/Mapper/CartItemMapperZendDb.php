@@ -37,7 +37,8 @@ class CartItemMapperZendDb extends AbstractDbMapper implements CartItemMapperInt
     public function findByCartId($cartId)
     {
         $select = new Select;
-        $select->from($this->tableName);
+        $select->from($this->tableName)
+            ->order('parent_item_id ASC');
 
         $where = new Where;
         $where->equalTo('cart_id', $cartId);
