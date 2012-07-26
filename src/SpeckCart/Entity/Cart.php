@@ -61,7 +61,7 @@ class Cart implements CartInterface, Iterator, Countable
     }
 
     public function removeItem($itemId)
-    {itemId
+    {
         if (isset($this->items[$itemId])) {
             unset($this->items[$itemId]);
         }
