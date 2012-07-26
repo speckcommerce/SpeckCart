@@ -4,7 +4,7 @@ namespace SpeckCart\Entity;
 
 use DateTime;
 
-class CartItem implements CartItemInterface
+class CartItem extends AbstractItemCollection implements CartItemInterface
 {
     protected $cartItemId;
     protected $cartId;
@@ -15,8 +15,6 @@ class CartItem implements CartItemInterface
     protected $addedTime;
     protected $tax = 0;
     protected $parentItemId = 0;
-
-    protected $children = array();
 
     public function __construct(array $config = array())
     {
@@ -139,23 +137,6 @@ class CartItem implements CartItemInterface
     public function setParentItemId($itemId)
     {
         $this->parentItemId = $itemId;
-        return $this;
-    }
-
-    public function getChildren()
-    {
-        return $this->children;
-    }
-
-    public function setChildren(array $children)
-    {
-        $this->children = $children;
-        return $this;
-    }
-
-    public function addChild(CartItemInterface $child)
-    {
-        $this->children[ $child->getCartItemId() ] = $child;
         return $this;
     }
 }

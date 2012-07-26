@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS `cart` (
 CREATE TABLE IF NOT EXISTS `cart_item` (
   `item_id` int(11) NOT NULL AUTO_INCREMENT,
   `cart_id` int(11) NOT NULL,
-  `description` varchar(255) NOT NULL,
+  `description` varchar(255) DEFAULT NULL,
   `quantity` int(11) NOT NULL,
   `price` decimal(15,5) DEFAULT NULL,
   `tax` decimal(15,5) DEFAULT NULL,
