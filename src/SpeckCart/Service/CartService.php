@@ -55,7 +55,7 @@ class CartService implements CartServiceInterface
             $tree[ $i->getCartItemId() ] = $i;
 
             if ($i->getParentItemId() != 0) {
-                $tree[ $i->getParentItemId() ]->addChild($i);
+                $tree[ $i->getParentItemId() ]->addItem($i);
             }
         }
 

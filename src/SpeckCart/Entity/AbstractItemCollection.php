@@ -4,7 +4,7 @@ namespace SpeckCart\Entity;
 use \Iterator;
 use \Countable;
 
-abstract class AbstractItemCollection implements ItemCollectionInterface, Iterator, Countable
+abstract class AbstractItemCollection implements ItemCollectionInterface
 {
     /**
      * @var array

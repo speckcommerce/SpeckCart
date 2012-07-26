@@ -105,12 +105,12 @@ class CartServiceTest extends PHPUnit_Framework_TestCase
 
         $items = $this->cartService->unflatten($items);
 
-        $children = $items[1]->getChildren();
+        $children = $items[1]->getItems();
         $this->assertEquals(2, count($children));
-        $this->assertEquals(1, count($children[2]->getChildren()));
-        $this->assertEquals(0, count($children[3]->getChildren()));
+        $this->assertEquals(1, count($children[2]->getItems()));
+        $this->assertEquals(0, count($children[3]->getItems()));
 
-        $children = $items[30]->getChildren();
+        $children = $items[30]->getItems();
         $this->assertEquals(1, count($children));
     }
 }
