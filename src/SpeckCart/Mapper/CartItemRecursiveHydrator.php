@@ -36,7 +36,11 @@ class CartItemRecursiveHydrator extends CartItemHydrator
             return $this->index[ $data['item_id'] ]['object'];
         }
 
-        $item = parent::hydrate($data, $this->index[ $data['item_id'] ]['object']);
+        if (isset($this->index[ $data['item_id'] ])) {
+            $object = $this->index[ $data['item_id'] ]['object'];
+        }
+
+        $item = parent::hydrate($data, $object);
 
         $this->index[ $data['item_id'] ] = array(
             'object'    => $item,
