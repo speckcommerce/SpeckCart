@@ -23,13 +23,6 @@ class Cart implements CartInterface, Iterator, Countable
     protected $items = array();
 
     /**
-     * index for looping
-     *
-     * @var int
-     */
-    protected $itemIndex = 0;
-
-    /**
      * constructor
      *
      * @param array items already in cart
@@ -68,7 +61,7 @@ class Cart implements CartInterface, Iterator, Countable
     }
 
     public function removeItem($itemId)
-    {
+    {itemId
         if (isset($this->items[$itemId])) {
             unset($this->items[$itemId]);
         }
@@ -78,6 +71,7 @@ class Cart implements CartInterface, Iterator, Countable
 
     public function setItems(array $items)
     {
+        $this->items = array();
         foreach ($items as $i) {
             $this->items[ $i->getCartItemid() ] = $i;
         }
@@ -97,26 +91,26 @@ class Cart implements CartInterface, Iterator, Countable
 
     public function current()
     {
-        return $this->items[$this->itemIndex];
+        return current($this->items);
     }
 
     public function key()
     {
-        return $this->itemIndex;
+        return key($this->items);
     }
 
     public function next()
     {
-        $this->itemIndex++;
+        next($this->items);
     }
 
     public function rewind()
     {
-        $this->itemIndex = 0;
+        reset($this->items);
     }
 
     public function valid()
     {
-        return isset($this->items[$this->itemIndex]);;
+        return isset($this->current());
     }
 }
