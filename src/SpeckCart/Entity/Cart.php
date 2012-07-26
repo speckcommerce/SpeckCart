@@ -78,6 +78,9 @@ class Cart implements CartInterface, Iterator, Countable
 
     public function removeItem($itemId)
     {
+        if ($itemId instanceof CartItemInterface) {
+            $itemId = $itemId->getCartItemId();
+        }
         if (isset($this->items[$itemId])) {
             unset($this->items[$itemId]);
         }
