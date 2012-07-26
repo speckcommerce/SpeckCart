@@ -4,7 +4,7 @@ namespace SpeckCart\Entity;
 
 use DateTime;
 
-interface CartItemInterface
+interface CartItemInterface extends ItemCollectionInterface
 {
     /**
      * Get the ID for this cart item
@@ -125,27 +125,4 @@ interface CartItemInterface
     * @return CartItemInterface
     **/
     public function setTax($tax);
-
-    /**
-     * get the children of this line item
-     *
-     * @return array
-     */
-    public function getChildren();
-
-    /**
-     * set the children of this line item
-     *
-     * @param array $children
-     * @return CartItemInterface
-     */
-    public function setChildren(array $children);
-
-    /**
-     * add a child to this line item
-     *
-     * @param CartItemInterface $child
-     * @return CartItemInterface
-     */
-    public function addChild(CartItemInterface $child);
 }
