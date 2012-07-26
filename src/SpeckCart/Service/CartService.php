@@ -14,6 +14,8 @@ class CartService implements CartServiceInterface
     protected $cartMapper;
     protected $itemMapper;
 
+    protected $index;
+
     public function createSessionCart()
     {
         $container = new Container('speckcart', $this->getSessionManager());
@@ -39,33 +41,12 @@ class CartService implements CartServiceInterface
             }
         } else {
             $cart = $this->cartMapper->findById($container->cartId);
-
             $items = $this->itemMapper->findByCartId($cart->getCartId());
-            $items = $this->unflatten($items);
 
             $cart->setItems($items);
         }
 
         return $cart;
-    }
-
-    public function unflatten(array $items) {
-        $tree = array();
-        foreach ($items as $i) {
-            $tree[ $i->getCartItemId() ] = $i;
-
-            if ($i->getParentItemId() != 0) {
-                $tree[ $i->getParentItemId() ]->addChild($i);
-            }
-        }
-
-        foreach ($tree as $index => $item) {
-            if ($item->getParentItemId() != 0) {
-                unset($tree[$index]);
-            }
-        }
-
-        return $tree;
     }
 
     public function addItemToCart(CartItemInterface $item, CartInterface $cart = null)

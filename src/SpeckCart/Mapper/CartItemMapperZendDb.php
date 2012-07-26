@@ -2,12 +2,16 @@
 
 namespace SpeckCart\Mapper;
 
+use ArrayObject;
+
 use SpeckCart\Entity\CartItem;
 use SpeckCart\Entity\CartItemInterface;
 
+use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\Sql\Select;
 use Zend\Db\Sql\Sql;
 use Zend\Db\Sql\Where;
+use Zend\Stdlib\Hydrator\ArraySerializable;
 
 use ZfcBase\Mapper\AbstractDbMapper;
 
@@ -36,14 +40,25 @@ class CartItemMapperZendDb extends AbstractDbMapper implements CartItemMapperInt
 
     public function findByCartId($cartId)
     {
-        $select = new Select;
-        $select->from($this->tableName)
-            ->order('parent_item_id ASC');
+        $hydrator = new CartItemRecursiveHydrator;
+        $adapter = $this->getDbAdapter();
+        $statement = $adapter->createStatement();
 
         $where = new Where;
         $where->equalTo('cart_id', $cartId);
 
-        $resultSet = $this->selectMany($select->where($where));
+        $select = new Select;
+        $select->from($this->tableName)
+            ->order('parent_item_id ASC')
+            ->where($where)
+            ->prepareStatement($adapter, $statement);
+
+        $result = $statement->execute();
+
+        $resultSet = new ResultSet(ResultSet::TYPE_ARRAY);
+        $resultSet = $resultSet->initialize($result)->toArray();
+        $resultSet = $hydrator->hydrate($resultSet, new CartItem);
+
         return $resultSet;
     }
 
