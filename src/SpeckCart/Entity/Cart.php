@@ -17,16 +17,6 @@ class Cart extends AbstractItemCollection implements CartInterface
      */
     protected $createdTime;
 
-    /**
-     * constructor
-     *
-     * @param array items already in cart
-     */
-    public function __construct(array $items = array())
-    {
-        $this->setItems($items);
-    }
-
     public function getCartId()
     {
         return $this->cartId;
