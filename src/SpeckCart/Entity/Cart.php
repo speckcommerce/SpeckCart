@@ -78,6 +78,7 @@ class Cart implements CartInterface, Iterator, Countable
 
     public function setItems(array $items)
     {
+        $this->items = array();
         foreach ($items as $i) {
             $this->items[ $i->getCartItemid() ] = $i;
         }
