@@ -42,11 +42,19 @@ interface CartInterface
      * @return CartInterface
      */
     public function addItem(CartItemInterface $item);
+    
+    /**
+     * Add an array of items to this cart
+     *
+     * @param CartItemInterface item
+     * @return CartInterface
+     */
+    public function addItems(array $item);
 
     /**
      * Remove an item from the cart
      *
-     * @param int itemId
+     * @param int|CartItemInterface itemId
      * @return CartInterface
      */
     public function removeItem($itemId);
