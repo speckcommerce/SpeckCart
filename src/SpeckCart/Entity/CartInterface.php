@@ -54,7 +54,7 @@ interface CartInterface
     /**
      * Remove an item from the cart
      *
-     * @param int itemId
+     * @param int|CartItemInterface itemId
      * @return CartInterface
      */
     public function removeItem($itemId);
