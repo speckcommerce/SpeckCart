@@ -12,6 +12,11 @@ abstract class AbstractItemCollection implements ItemCollectionInterface
     protected $items = array();
 
     /**
+     * @var object
+     */
+    protected $parent = null;
+
+    /**
      * constructor
      *
      * @param array items already in cart
@@ -89,5 +94,15 @@ abstract class AbstractItemCollection implements ItemCollectionInterface
     public function valid()
     {
         return current($this->items) !== false;
+    }
+
+    public function getParent()
+    {
+        return $this->parent;
+    }
+
+    public function setParent($parent)
+    {
+        $this->parent = $parent;
     }
 }
