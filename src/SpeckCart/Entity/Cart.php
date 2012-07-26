@@ -66,6 +66,15 @@ class Cart implements CartInterface, Iterator, Countable
         $this->items[ $item->getCartItemId() ] = $item;
         return $this;
     }
+    
+    public function addItems(array $items)
+    {
+        foreach ($items as $i) {
+            $this->items[ $i->getCartItemid() ] = $i;
+        }
+
+        return $this;
+    }
 
     public function removeItem($itemId)
     {
@@ -79,9 +88,7 @@ class Cart implements CartInterface, Iterator, Countable
     public function setItems(array $items)
     {
         $this->items = array();
-        foreach ($items as $i) {
-            $this->items[ $i->getCartItemid() ] = $i;
-        }
+        $this->addItems($items);
 
         return $this;
     }
