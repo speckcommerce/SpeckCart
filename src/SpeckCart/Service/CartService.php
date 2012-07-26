@@ -41,9 +41,7 @@ class CartService implements CartServiceInterface
             }
         } else {
             $cart = $this->cartMapper->findById($container->cartId);
-
             $items = $this->itemMapper->findByCartId($cart->getCartId());
-            //$items = $this->unflatten($items);
 
             $cart->setItems($items);
         }
