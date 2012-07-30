@@ -5,7 +5,7 @@ function renderCartItem($item, $level = 0) {
     $str .= $item->getDescription() . ' | ' . $item->getQuantity() . ' @ $' . $item->getPrice();
     $str .= "<br />";
 
-    foreach ($item->getChildren() as $c) {
+    foreach ($item->getItems() as $c) {
         $str .= renderCartItem($c, $level+1);
     }
 
