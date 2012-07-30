@@ -6,9 +6,6 @@ use Zend\Stdlib\Hydrator\HydratorInterface;
 
 class CartItemHydrator implements HydratorInterface
 {
-    /**
-     * @TODO performance indicators
-     */
     public function extract($object)
     {
         $result = array(
@@ -28,9 +25,6 @@ class CartItemHydrator implements HydratorInterface
         return $result;
     }
 
-    /**
-     * @TODO performance indicators
-     */
     public function hydrate(array $data, $object)
     {
         $object->setCartItemId($data['item_id'])
