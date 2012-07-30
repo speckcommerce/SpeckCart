@@ -37,29 +37,6 @@ interface CartItemInterface extends ItemCollectionInterface
     public function setCartId($cartId);
 
     /**
-     * Return the performance indicators for querying this item
-     *
-     * @return array
-     */
-    public function getPerformanceIndicators();
-
-    /**
-     * Set the performance indicators for querying this item
-     *
-     * @param array indicators
-     * @return CartItemInterface
-     */
-    public function setPerformanceIndicators(array $indicators);
-
-    /**
-     * Add a performance indicator for querying this item
-     *
-     * @param string indicator
-     * @return CartItemInterface
-     */
-    public function addPerformanceIndicator($indicator);
-
-    /**
      * Get the price of this item
      *
      * @return float

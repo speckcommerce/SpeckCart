@@ -8,8 +8,7 @@ class CartItem extends AbstractItemCollection implements CartItemInterface
 {
     protected $cartItemId;
     protected $cartId;
-    protected $description;
-    protected $performanceIndicators;
+    protected $description = "";
     protected $price;
     protected $quantity;
     protected $addedTime;
@@ -60,23 +59,6 @@ class CartItem extends AbstractItemCollection implements CartItemInterface
     public function setDescription($description)
     {
         $this->description = $description;
-        return $this;
-    }
-
-    public function getPerformanceIndicators()
-    {
-        return $this->performanceIndicators;
-    }
-
-    public function setPerformanceIndicators(array $performanceIndicators)
-    {
-        $this->performanceIndicators = $performanceIndicators;
-        return $this;
-    }
-
-    public function addPerformanceIndicator($indicator)
-    {
-        $this->performanceIndicators[] = $indicator;
         return $this;
     }
 
