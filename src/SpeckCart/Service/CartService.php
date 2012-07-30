@@ -6,6 +6,7 @@ use SpeckCart\Entity\Cart;
 use SpeckCart\Entity\CartInterface;
 use SpeckCart\Entity\CartItemInterface;
 
+use Zend\EventManager\Event;
 use Zend\Session\Container;
 
 class CartService implements CartServiceInterface
@@ -13,6 +14,7 @@ class CartService implements CartServiceInterface
     protected $sessionManager;
     protected $cartMapper;
     protected $itemMapper;
+    protected $eventManager;
 
     protected $index;
 
@@ -49,6 +51,12 @@ class CartService implements CartServiceInterface
         return $cart;
     }
 
+    public function onAddItem(Event $e)
+    {
+        $this->addItemToCart($e->getParam('item'));
+        $this->getEventManager()->trigger(CartEvent::EVENT_ADD_ITEM_POST, $this, $e->getParams());
+    }
+
     public function addItemToCart(CartItemInterface $item, CartInterface $cart = null)
     {
         if ($cart === null) {
@@ -74,6 +82,13 @@ class CartService implements CartServiceInterface
         $cart->removeItem($itemId);
 
         return $this;
+    }
+
+    public function attachDefaultListeners()
+    {
+        $events = $this->getEventManager();
+        $events->attach(CartEvent::EVENT_ADD_ITEM, array($this, 'onAddItem'));
+        //$events->attach(CartEvent::EVENT_REMOVE_ITEM, array($this, 'onRemoveItem'));
     }
 
     public function getSessionManager()
@@ -110,6 +125,17 @@ class CartService implements CartServiceInterface
     public function setItemMapper($itemMapper)
     {
         $this->itemMapper = $itemMapper;
+        return $this;
+    }
+
+    public function getEventManager()
+    {
+        return $this->eventManager;
+    }
+
+    public function setEventManager($eventManager)
+    {
+        $this->eventManager = $eventManager;
         return $this;
     }
 }
