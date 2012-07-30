@@ -22,6 +22,8 @@ class Module implements AutoloaderProviderInterface
                     $service = new Service\CartService;
                     $service->setItemMapper($sm->get('SpeckCart\Mapper\CartItemMapperZendDb'));
                     $service->setCartMapper($sm->get('SpeckCart\Mapper\CartMapperZendDb'));
+                    $service->setEventManager($sm->get('EventManager'));
+                    $service->attachDefaultListeners();
                     return $service;
                 },
 
