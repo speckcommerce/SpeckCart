@@ -4,9 +4,12 @@ namespace SpeckCartTest\Service;
 
 use Bootstrap;
 use PHPUnit_Framework_TestCase;
+
 use SpeckCart\Entity\CartItem;
+use SpeckCart\Service\CartEvent;
 use SpeckCart\Service\CartService;
 use SpeckCartTest\TestAsset\SessionManager;
+
 use Zend\Session\Container;
 
 require_once 'SpeckCart/TestAsset/SessionManager.php';
@@ -49,6 +52,16 @@ class CartServiceTest extends PHPUnit_Framework_TestCase
         // check that it's the same item still
         $itemAddedToCart = $this->cartService->getSessionCart()->getItems();
         $this->assertEquals($item->getCartItemId(), $itemAddedToCart[1]->getCartItemId());
+    }
+
+    public function testAddUsingEvent()
+    {
+        $event = new CartEvent;
+        $event->setCartItem(new CartItem);
+
+        $this->cartService->onAddItem($event);
+        $itemAddedToCart = $this->cartService->getSessionCart()->getItems();
+        $this->assertEquals(1, $itemAddedToCart[1]->getCartItemId());
     }
 
     public function testDuplicateItemsAreNotAdded()
