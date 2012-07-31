@@ -31,6 +31,7 @@ class Bootstrap
         // use ModuleManager to load this module and it's dependencies
         $config = array(
             'modules' => array(
+                'SpeckPI',
                 'SpeckCart',
                 'ZfcBase',
             ),

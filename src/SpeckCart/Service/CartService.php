@@ -7,9 +7,12 @@ use SpeckCart\Entity\CartInterface;
 use SpeckCart\Entity\CartItemInterface;
 
 use Zend\EventManager\Event;
+use Zend\EventManager\EventManager;
+use Zend\EventManager\EventManagerAwareInterface;
+use Zend\EventManager\EventManagerInterface;
 use Zend\Session\Container;
 
-class CartService implements CartServiceInterface
+class CartService implements CartServiceInterface, EventManagerAwareInterface
 {
     protected $sessionManager;
     protected $cartMapper;
@@ -17,6 +20,11 @@ class CartService implements CartServiceInterface
     protected $eventManager;
 
     protected $index;
+
+    public function __construct()
+    {
+        $this->setEventManager(new EventManager());
+    }
 
     public function createSessionCart()
     {
@@ -53,7 +61,7 @@ class CartService implements CartServiceInterface
 
     public function onAddItem(Event $e)
     {
-        $this->addItemToCart($e->getParam('item'));
+        $this->addItemToCart($e->getCartItem());
         $this->getEventManager()->trigger(CartEvent::EVENT_ADD_ITEM_POST, $this, $e->getParams());
     }
 
@@ -133,8 +141,16 @@ class CartService implements CartServiceInterface
         return $this->eventManager;
     }
 
-    public function setEventManager($eventManager)
+    public function setEventManager(EventManagerInterface $eventManager)
     {
+        $eventManager->setIdentifiers(
+            __CLASS__,
+            get_called_class(),
+            'speckcart'
+        );
+
+        $eventManager->setEventClass('SpeckCart\Service\CartEvent');
+
         $this->eventManager = $eventManager;
         return $this;
     }
