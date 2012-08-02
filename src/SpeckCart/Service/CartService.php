@@ -75,16 +75,24 @@ class CartService implements CartServiceInterface, EventManagerAwareInterface
             ->setAddedTime(new \DateTime());
         $this->itemMapper->persist($item);
 
-        foreach ($item->getItems() as $i) {
-            $i->setCartId($cart->getCartId())
-                ->setAddedTime(new \DateTime())
-                ->setParentItemId($item->getCartItemId())
-                ->setParent($item);
-        }
+        $this->persistCartItemChildren($item->getItems(), $item, $cart);
 
         $cart->addItem($item);
 
         return $this;
+    }
+
+    protected function persistCartItemChildren(array $children, CartItemInterface $parent, CartInterface $cart)
+    {
+        foreach ($children as $i) {
+            $i->setCartId($cart->getCartId())
+                ->setAddedTime(new \DateTime())
+                ->setParentItemId($parent->getCartItemId())
+                ->setParent($parent);
+
+            $this->itemMapper->persist($parent);
+            $this->persistCartItemChildren($i->getItems(), $i, $cart);
+        }
     }
 
     public function removeItemFromCart($itemId, CartInterface $cart = null)
