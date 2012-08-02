@@ -74,6 +74,29 @@ class CartServiceTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(1, count($this->cartService->getSessionCart()->getItems()));
     }
 
+    public function testRecursiveItems()
+    {
+        $item = new CartItem;
+        $item->setDescription("parent");
+
+        $child = new CartItem;
+        $child->setDescription("child");
+
+        $item->addItem($child);
+
+        $this->cartService->addItemToCart($item);
+        $items = $this->cartService->getSessionCart()->getItems();
+
+        $parent = $items[1];
+        $this->assertEquals("parent", $parent->getDescription());
+
+        $children = $parent->getItems();
+        $this->assertEquals(1, count($parent->getItems()));
+
+        $child = $children[2];
+        $this->assertEquals("child", $child->getDescription());
+    }
+
     public function testRemoveFromCart()
     {
         $item = new CartItem;

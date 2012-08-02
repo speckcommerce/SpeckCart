@@ -90,7 +90,7 @@ class CartService implements CartServiceInterface, EventManagerAwareInterface
                 ->setParentItemId($parent->getCartItemId())
                 ->setParent($parent);
 
-            $this->itemMapper->persist($parent);
+            $this->itemMapper->persist($i);
             $this->persistCartItemChildren($i->getItems(), $i, $cart);
         }
     }

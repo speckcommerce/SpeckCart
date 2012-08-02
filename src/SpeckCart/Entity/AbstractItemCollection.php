@@ -28,14 +28,22 @@ abstract class AbstractItemCollection implements ItemCollectionInterface
 
     public function addItem(CartItemInterface $item)
     {
-        $this->items[$item->getCartItemId()] = $item;
+        if ($item->getCartItemId() == null) {
+            $this->items[] = $item;
+        } else {
+            $this->items[$item->getCartItemId()] = $item;
+        }
         return $this;
     }
 
     public function addItems(array $items)
     {
         foreach ($items as $i) {
-            $this->items[$i->getCartItemid()] = $i;
+            if ($i->getCartItemId() == null) {
+                $this->items[] = $i;
+            } else {
+                $this->items[$i->getCartItemId()] = $i;
+            }
         }
 
         return $this;

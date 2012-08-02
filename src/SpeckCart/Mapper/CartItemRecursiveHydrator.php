@@ -58,8 +58,8 @@ class CartItemRecursiveHydrator extends CartItemHydrator
 
     protected function getParent($id)
     {
-        if (isset($this->index[$id])) {
-            return $this->index[$id];
+        if (isset($this->index[$id]) && $this->index[$id]['object'] !== null) {
+            return $this->index[$id]['object'];
         } else {
             return $this->addPrototype($id);
         }

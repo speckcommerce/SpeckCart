@@ -121,4 +121,9 @@ class CartItem extends AbstractItemCollection implements CartItemInterface
         $this->parentItemId = $itemId;
         return $this;
     }
+
+    public function removeItem($item)
+    {
+        throw new \Exception("not implemented");
+    }
 }
