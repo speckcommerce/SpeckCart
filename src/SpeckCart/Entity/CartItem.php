@@ -14,6 +14,7 @@ class CartItem extends AbstractItemCollection implements CartItemInterface
     protected $addedTime;
     protected $tax = 0;
     protected $parentItemId = 0;
+    protected $metadata;
 
     public function __construct(array $config = array())
     {
@@ -119,6 +120,17 @@ class CartItem extends AbstractItemCollection implements CartItemInterface
     public function setParentItemId($itemId)
     {
         $this->parentItemId = $itemId;
+        return $this;
+    }
+
+    public function getMetadata()
+    {
+        return $this->metadata;
+    }
+
+    public function setMetadata($metadata)
+    {
+        $this->metadata = $metadata;
         return $this;
     }
 

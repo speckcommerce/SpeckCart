@@ -16,6 +16,7 @@ class CartItemHydrator implements HydratorInterface
             'tax'                    => $object->getTax() ?: 0,
             'added_time'             => $object->getAddedTime()->format('c'),
             'parent_item_id'         => $object->getParentItemId(),
+            'metadata'               => serialize($object->getMetadata()),
         );
 
         if ($object->getCartItemId() !== null) {
@@ -34,7 +35,8 @@ class CartItemHydrator implements HydratorInterface
             ->setQuantity($data['quantity'])
             ->setTax($data['tax'])
             ->setAddedTime(new \DateTime($data['added_time']))
-            ->setParentItemId($data['parent_item_id']);
+            ->setParentItemId($data['parent_item_id'])
+            ->setMetadata(unserialize($data['metadata']));
 
         return $object;
     }

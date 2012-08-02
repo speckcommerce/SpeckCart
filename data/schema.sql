@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS `cart_item` (
   `tax` decimal(15,5) DEFAULT NULL,
   `added_time` datetime DEFAULT NULL,
   `parent_item_id` int(11) DEFAULT 0,
+  `metadata` blob,
   PRIMARY KEY (`item_id`),
   KEY `cart_id` (`cart_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
