@@ -75,6 +75,13 @@ class CartService implements CartServiceInterface, EventManagerAwareInterface
             ->setAddedTime(new \DateTime());
         $this->itemMapper->persist($item);
 
+        foreach ($item->getItems() as $i) {
+            $i->setCartId($cart->getCartId())
+                ->setAddedTime(new \DateTime())
+                ->setParentItemId($item->getCartItemId())
+                ->setParent($item);
+        }
+
         $cart->addItem($item);
 
         return $this;
