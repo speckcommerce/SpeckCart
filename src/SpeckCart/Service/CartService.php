@@ -59,6 +59,16 @@ class CartService implements CartServiceInterface, EventManagerAwareInterface
         return $cart;
     }
 
+    public function findById($itemId)
+    {
+        return $this->cartMapper->findById($itemId);
+    }
+
+    public function persist(CartItemInterface $item)
+    {
+        return $this->cartMaper->persist($item);
+    }
+
     public function onAddItem(Event $e)
     {
         $this->addItemToCart($e->getCartItem());
