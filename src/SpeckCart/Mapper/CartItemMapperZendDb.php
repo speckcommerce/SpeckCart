@@ -34,7 +34,7 @@ class CartItemMapperZendDb extends AbstractDbMapper implements CartItemMapperInt
         $where = new Where;
         $where->equalTo($this->itemIdField, $itemId);
 
-        $resultSet = $this->selectWith($select->where($where));
+        $resultSet = $this->select($select->where($where));
         return $resultSet->current();
     }
 
@@ -95,7 +95,7 @@ class CartItemMapperZendDb extends AbstractDbMapper implements CartItemMapperInt
 
     protected function selectMany($select)
     {
-        $resultSet = $this->selectWith($select);
+        $resultSet = $this->select($select);
 
         $return = array();
         foreach ($resultSet as $r) {

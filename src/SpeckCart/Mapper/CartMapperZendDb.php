@@ -29,7 +29,7 @@ class CartMapperZendDb extends AbstractDbMapper implements CartMapperInterface
         $where = new Where;
         $where->equalTo($this->cartIdField, $cartId);
 
-        $resultSet = $this->selectWith($select->where($where));
+        $resultSet = $this->select($select->where($where));
         return $resultSet->current();
     }
 
