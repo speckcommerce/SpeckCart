@@ -1,0 +1,22 @@
+{
+    "name": "speckcommerce/speck-cart",
+    "description": "",
+    "type": "library",
+    "keywords": [
+        "zf2"
+    ],
+    "homepage": "http://github.com/speckcommerce/SpeckCart",
+    "authors": [
+    ],
+    "require": {
+    },
+    "autoload": {
+        "psr-0": {
+            "SpeckCart": "src/"
+        },
+        "classmap": [
+            "./"
+        ]
+    }
+}
+
