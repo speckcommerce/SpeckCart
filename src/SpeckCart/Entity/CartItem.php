@@ -25,8 +25,9 @@ class CartItem extends AbstractItemCollection implements CartItemInterface
             $this->price        = isset($config['price'])          ? $config['price']          : null;
             $this->quantity     = isset($config['quantity'])       ? $config['quantity']       : null;
             $this->addedTime    = isset($config['added_time'])     ? $config['added_time']     : null;
-            $this->tax          = isset($config['tax'])            ? $config['tax']            : null;
+            $this->tax          = isset($config['tax'])            ? $config['tax']            : 0;
             $this->parentItemId = isset($config['parent_item_id']) ? $config['parent_item_id'] : 0;
+            $this->metadata     = isset($config['metadata'])       ? $config['metadata']       : null;
         }
     }
 
