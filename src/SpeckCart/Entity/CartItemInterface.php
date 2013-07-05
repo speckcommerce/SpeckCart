@@ -82,12 +82,22 @@ interface CartItemInterface extends ItemCollectionInterface
     public function setAddedTime(DateTime $time);
 
     /**
-     * Get the extended price for this item
+     * Get the extended price for this item (and children if selected)
      *
+	 * @param Boolean include tax
+	 * @param Boolean recursive
      * @return float
      */
-    public function getExtPrice();
+    public function getExtPrice($includeTax=true, $recursive=false);
 
+	/**
+	 * Get the extended tax price for this item (and children if selected)
+	 *
+	 * @param Boolean recursive
+	 * @return float
+	 */
+    public function getExtTax($recursive=false);
+	
     /**
     * Get the tax associated for this item
     *
