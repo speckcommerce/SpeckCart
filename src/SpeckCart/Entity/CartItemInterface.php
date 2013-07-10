@@ -84,20 +84,20 @@ interface CartItemInterface extends ItemCollectionInterface
     /**
      * Get the extended price for this item (and children if selected)
      *
-	 * @param Boolean include tax
-	 * @param Boolean recursive
+     * @param Boolean include tax
+     * @param Boolean recursive
      * @return float
      */
     public function getExtPrice($includeTax=true, $recursive=false);
 
-	/**
-	 * Get the extended tax price for this item (and children if selected)
-	 *
-	 * @param Boolean recursive
-	 * @return float
-	 */
+    /**
+     * Get the extended tax price for this item (and children if selected)
+     *
+     * @param Boolean recursive
+     * @return float
+     */
     public function getExtTax($recursive=false);
-	
+
     /**
     * Get the tax associated for this item
     *
