@@ -1,65 +1,110 @@
 <?php
-use Zend\Loader\AutoloaderFactory;
-use Zend\Mvc\Application;
-use Zend\ServiceManager\ServiceManager;
-use Zend\ServiceManager\Config;
+namespace SpeckCartTest;
 
-error_reporting( E_ALL | E_STRICT );
+use Zend\Loader\AutoloaderFactory;
+use Zend\Mvc\Service\ServiceManagerConfig;
+use Zend\ServiceManager\ServiceManager;
+use Zend\Stdlib\ArrayUtils;
+use RuntimeException;
+
+error_reporting(E_ALL | E_STRICT);
+chdir(__DIR__);
 
 class Bootstrap
 {
-    static $serviceManager;
+    protected static $serviceManager;
+    protected static $config;
 
-    public static function go()
+    public static function init()
     {
-        $zf2Path = realpath(defined('ZF2_PATH') ? ZF2_PATH : (getenv('ZF2_PATH') ?: '/zf2/library'));
+        // Load the user-defined test configuration file, if it exists; otherwise, load
+        if (is_readable(__DIR__ . '/TestConfiguration.php')) {
+            $testConfig = include __DIR__ . '/TestConfiguration.php';
+        } else {
+            $testConfig = include __DIR__ . '/TestConfiguration.php.dist';
+        }
 
-        // parent directory of this module
-        $zf2ModulesPaths = dirname(dirname(__DIR__)) . PATH_SEPARATOR;
-        // other paths to find modules one
-        $zf2ModulesPaths .= getenv('ZF2_MODULES_TEST_PATHS') ?: realpath(__DIR__ . '/../../../vendor');
+        $zf2ModulePaths = array();
 
+        if(isset($testConfig['module_listener_options']['module_paths'])) {
+            $modulePaths = $testConfig['module_listener_options']['module_paths'];
+            foreach($modulePaths as $modulePath) {
+                if (($path = static::findParentPath($modulePath)) ) {
+                    $zf2ModulePaths[] = $path;
+                }
+            }
+        }
 
-        // autoload ZF2
-        include $zf2Path . '/Zend/Loader/AutoloaderFactory.php';
-        AutoloaderFactory::factory(array(
-            'Zend\Loader\StandardAutoloader' => array(
-                'autoregister_zf' => true,
-            ),
-        ));
+        $zf2ModulePaths  = implode(PATH_SEPARATOR, $zf2ModulePaths) . PATH_SEPARATOR;
+        $zf2ModulePaths .= getenv('ZF2_MODULES_TEST_PATHS') ?: (defined('ZF2_MODULES_TEST_PATHS') ? ZF2_MODULES_TEST_PATHS : '');
+
+        static::initAutoloader();
 
         // use ModuleManager to load this module and it's dependencies
-        $config = array(
-            'modules' => array(
-                'SpeckPI',
-                'SpeckCart',
-                'ZfcBase',
-            ),
+        $baseConfig = array(
             'module_listener_options' => array(
-                'config_glob_paths'    => array(
-                    __DIR__ . '/config/autoload/{,*.}{global,local}.php',
-                ),
-                'config_cache_enabled' => false,
-                'module_paths' => explode(PATH_SEPARATOR, $zf2ModulesPaths),
+                'module_paths' => explode(PATH_SEPARATOR, $zf2ModulePaths),
             ),
         );
 
-        $app = Application::init($config);
-        self::$serviceManager = $app->getServiceManager();
+        $config = ArrayUtils::merge($baseConfig, $testConfig);
+
+        $serviceManager = new ServiceManager(new ServiceManagerConfig());
+        $serviceManager->setService('ApplicationConfig', $config);
+        $serviceManager->get('ModuleManager')->loadModules();
+
+        static::$serviceManager = $serviceManager;
+        static::$config = $config;
     }
 
     public static function getServiceManager()
     {
-        return self::$serviceManager;
+        return static::$serviceManager;
+    }
+
+    public static function getConfig()
+    {
+        return static::$config;
+    }
+
+    protected static function initAutoloader()
+    {
+        $vendorPath = static::findParentPath('vendor');
+
+        if (is_readable($vendorPath . '/autoload.php')) {
+            $loader = include $vendorPath . '/autoload.php';
+        } else {
+            $zf2Path = getenv('ZF2_PATH') ?: (defined('ZF2_PATH') ? ZF2_PATH : (is_dir($vendorPath . '/ZF2/library') ? $vendorPath . '/ZF2/library' : false));
+
+            if (!$zf2Path) {
+                throw new RuntimeException('Unable to load ZF2. Run `php composer.phar install` or define a ZF2_PATH environment variable.');
+            }
+
+            include $zf2Path . '/Zend/Loader/AutoloaderFactory.php';
+
+        }
+
+        AutoloaderFactory::factory(array(
+            'Zend\Loader\StandardAutoloader' => array(
+                'autoregister_zf' => true,
+                'namespaces' => array(
+                    __NAMESPACE__ => __DIR__ . '/' . __NAMESPACE__,
+                ),
+            ),
+        ));
+    }
+
+    protected static function findParentPath($path)
+    {
+        $dir = __DIR__;
+        $previousDir = '.';
+        while (!is_dir($dir . '/' . $path)) {
+            $dir = dirname($dir);
+            if ($previousDir === $dir) return false;
+            $previousDir = $dir;
+        }
+        return $dir . '/' . $path;
     }
 }
 
-// Load the user-defined test configuration file, if it exists; otherwise, load
-// the default configuration.
-if (is_readable(__DIR__ . DIRECTORY_SEPARATOR . 'TestConfiguration.php')) {
-    require_once __DIR__ . DIRECTORY_SEPARATOR . 'TestConfiguration.php';
-} else {
-    require_once __DIR__ . DIRECTORY_SEPARATOR . 'TestConfiguration.php.dist';
-}
-
-Bootstrap::go();
+Bootstrap::init();

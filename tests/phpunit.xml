@@ -1,7 +1,12 @@
 <phpunit bootstrap="./Bootstrap.php" colors="true">
     <testsuites>
         <testsuite name="SpeckCart Test Suite">
-            <directory>./SpeckCart</directory>
+            <directory>./SpeckCartTest</directory>
         </testsuite>
     </testsuites>
+    <filter>
+        <whitelist>
+            <directory suffix=".php">../src</directory>
+        </whitelist>
+    </filter>
 </phpunit>
