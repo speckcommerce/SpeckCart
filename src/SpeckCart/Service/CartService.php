@@ -35,6 +35,9 @@ class CartService implements CartServiceInterface, EventManagerAwareInterface
 
         $cart = $this->cartMapper->persist($cart);
         $container->cartId = $cart->getCartId();
+
+        $this->getEventManager()->trigger(CartEvent::EVENT_CREATE_CART_POST, $this, array('cart' => $cart));
+
         return $cart;
     }
 
@@ -51,9 +54,13 @@ class CartService implements CartServiceInterface, EventManagerAwareInterface
             }
         } else {
             $cart = $this->cartMapper->findById($container->cartId);
-            $items = $this->itemMapper->findByCartId($cart->getCartId());
 
-            $cart->setItems($items);
+            if($cart) {
+	            $items = $this->itemMapper->findByCartId($cart->getCartId());
+	            $cart->setItems($items);
+            } else {
+            	$cart = $this->createSessionCart();
+            }
         }
 
         return $cart;
