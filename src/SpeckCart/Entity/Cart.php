@@ -38,4 +38,26 @@ class Cart extends AbstractItemCollection implements CartInterface
         $this->createdTime = $time;
         return $this;
     }
+
+    public function getTotal($includeTax=true, $recursive=true)
+    {
+        $total = 0;
+        foreach($this->getItems() as $item)
+        {
+            $total += $item->getExtPrice($includeTax, $recursive);
+        }
+
+        return $total;
+    }
+
+    public function getTaxTotal($recursive=true)
+    {
+        $total = 0;
+        foreach($this->getItems() as $item)
+        {
+            $total += $item->getExtTax($recursive);
+        }
+
+        return $total;
+    }
 }
