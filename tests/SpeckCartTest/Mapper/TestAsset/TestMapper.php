@@ -3,6 +3,9 @@
 namespace SpeckCartTest\Mapper\TestAsset;
 
 use ZfcBase\Mapper\AbstractDbMapper;
+use \Zend\Stdlib\Hydrator\HydratorInterface;
+use \Zend\Db\Sql\Select;
+use \Zend\Db\Adapter\Adapter;
 
 class TestMapper extends AbstractDbMapper
 {
@@ -27,12 +30,12 @@ class TestMapper extends AbstractDbMapper
     }
 
     //PUBLIC
-    public function insert($data, $tableName=NULL, \Zend\Stdlib\Hydrator\HydratorInterface $hydrator = NULL)
+    public function insert($data, $tableName=NULL, HydratorInterface $hydrator = NULL)
     {
         return parent::insert($data, $tableName);
     }
 
-    public function query(\Zend\Db\Sql\Select $select)
+    public function query(Select $select)
     {
         $dbAdapter = $this->getDbAdapter();
         $platform = $dbAdapter->getPlatform();
@@ -54,7 +57,7 @@ class TestMapper extends AbstractDbMapper
      * @param $dbAdapter
      * @return self
      */
-    public function setDbAdapter(\Zend\Db\Adapter\Adapter $dbAdapter)
+    public function setDbAdapter(Adapter $dbAdapter)
     {
         $this->dbAdapter = $dbAdapter;
         return $this;

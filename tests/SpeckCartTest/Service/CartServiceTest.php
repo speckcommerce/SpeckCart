@@ -27,7 +27,7 @@ class CartServiceTest extends AbstractTestCase
 
     public function setUp()
     {
-    	parent::setup();
+        parent::setup();
         $container = new Container('speckcart', $this->sessionManager);
         unset($container->cartId);
     }
@@ -114,18 +114,18 @@ class CartServiceTest extends AbstractTestCase
 
     public function testEmptyCart()
     {
-    	$item = new CartItem;
-    	$item1 = new CartItem;
+        $item = new CartItem;
+        $item1 = new CartItem;
 
-    	$this->cartService->addItemToCart($item);
-    	$this->cartService->addItemToCart($item1);
+        $this->cartService->addItemToCart($item);
+        $this->cartService->addItemToCart($item1);
 
-    	// ensure multiple items exist first
-    	$this->assertEquals(2, count($this->cartService->getSessionCart()->getItems()));
+        // ensure multiple items exist first
+        $this->assertEquals(2, count($this->cartService->getSessionCart()->getItems()));
 
-    	$this->cartService->emptyCart();
+        $this->cartService->emptyCart();
 
-    	// ensure all items were removed
-    	$this->assertEquals(0, count($this->cartService->getSessionCart()->getItems()));
+        // ensure all items were removed
+        $this->assertEquals(0, count($this->cartService->getSessionCart()->getItems()));
     }
 }
