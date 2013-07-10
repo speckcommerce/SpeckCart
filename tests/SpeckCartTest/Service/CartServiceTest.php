@@ -2,19 +2,20 @@
 
 namespace SpeckCartTest\Service;
 
-use Bootstrap;
+use SpeckCartTest\Bootstrap;
 use PHPUnit_Framework_TestCase;
 
 use SpeckCart\Entity\CartItem;
 use SpeckCart\Service\CartEvent;
 use SpeckCart\Service\CartService;
 use SpeckCartTest\TestAsset\SessionManager;
+use SpeckCartTest\Mapper\TestAsset\AbstractTestCase;
 
 use Zend\Session\Container;
 
-require_once 'SpeckCart/TestAsset/SessionManager.php';
+require_once 'SpeckCartTest/TestAsset/SessionManager.php';
 
-class CartServiceTest extends PHPUnit_Framework_TestCase
+class CartServiceTest extends AbstractTestCase
 {
     public function __construct()
     {
@@ -26,8 +27,7 @@ class CartServiceTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->cartService->getCartMapper()->getDbAdapter()->query('TRUNCATE cart', 'execute');
-        $this->cartService->getCartMapper()->getDbAdapter()->query('TRUNCATE cart_item', 'execute');
+        parent::setup();
         $container = new Container('speckcart', $this->sessionManager);
         unset($container->cartId);
     }
@@ -109,6 +109,23 @@ class CartServiceTest extends PHPUnit_Framework_TestCase
         $this->cartService->removeItemFromCart(1);
 
         // ensure it was removed
+        $this->assertEquals(0, count($this->cartService->getSessionCart()->getItems()));
+    }
+
+    public function testEmptyCart()
+    {
+        $item = new CartItem;
+        $item1 = new CartItem;
+
+        $this->cartService->addItemToCart($item);
+        $this->cartService->addItemToCart($item1);
+
+        // ensure multiple items exist first
+        $this->assertEquals(2, count($this->cartService->getSessionCart()->getItems()));
+
+        $this->cartService->emptyCart();
+
+        // ensure all items were removed
         $this->assertEquals(0, count($this->cartService->getSessionCart()->getItems()));
     }
 }
