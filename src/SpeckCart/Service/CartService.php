@@ -129,15 +129,15 @@ class CartService implements CartServiceInterface, EventManagerAwareInterface
 
     public function emptyCart(CartInterface $cart=null)
     {
-    	if($cart === null) {
-    		$cart = $this->getSessionCart();
-    	}
+        if($cart === null) {
+            $cart = $this->getSessionCart();
+        }
 
-    	foreach($cart->getItems() as $item) {
-    		$this->removeItemFromCart($item->getCartItemId(), $cart);
-    	}
+        foreach($cart->getItems() as $item) {
+            $this->removeItemFromCart($item->getCartItemId(), $cart);
+        }
 
-    	return $this;
+        return $this;
     }
 
     public function attachDefaultListeners()
