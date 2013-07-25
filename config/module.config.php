@@ -24,6 +24,19 @@ return array(
                         'action' => 'index',
                     ),
                 ),
+                'may_terminate' => true,
+                'child_routes' => array(
+                    'empty-cart' => array(
+                        'type' => 'Literal',
+                        'options' => array(
+                            'route'    => '/empty-cart',
+                            'defaults' => array(
+                                'controller' => 'speckcart',
+                                'action' => 'empty-cart',
+                            ),
+                        ),
+                    ),
+                ),
             ),
         ),
     ),
