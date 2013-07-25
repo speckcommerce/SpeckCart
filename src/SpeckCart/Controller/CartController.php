@@ -18,6 +18,21 @@ class CartController extends AbstractActionController
         ));
     }
 
+    public function emptyCartAction()
+    {
+        $prg = $this->prg('cart/empty-cart');
+
+        // If a response is returned we want to reload before continuing...
+        if ($prg instanceof Response) {
+            return $prg;
+        } elseif ($prg !== false) {
+            $cs = $this->getCartService();
+            $cs->emptyCart();
+        }
+
+        return $this->redirect()->toUrl('/cart');
+    }
+
     public function getCartService()
     {
         if (!isset($this->cartService)) {
