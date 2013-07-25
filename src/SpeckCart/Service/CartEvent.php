@@ -16,6 +16,8 @@ class CartEvent extends Event
     const EVENT_CREATE_CART_POST = 'createCart.post';
     const EVENT_DELETE_CART      = 'removeCart';
     const EVENT_DELETE_CART_POST = 'removeCart.post';
+    const EVENT_EMPTY_CART       = 'emptyCart';
+    const EVENT_EMPTY_CART_POST  = 'emptyCart.post';
 
     public function setCartItem(CartItemInterface $cartItem)
     {

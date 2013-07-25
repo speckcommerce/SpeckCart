@@ -140,9 +140,13 @@ class CartService implements CartServiceInterface, EventManagerAwareInterface
             $cart = $this->getSessionCart();
         }
 
+        $this->getEventManager()->trigger(CartEvent::EVENT_EMPTY_CART, $this, array('cart' => $cart));
+
         foreach($cart->getItems() as $item) {
             $this->removeItemFromCart($item->getCartItemId(), $cart);
         }
+
+    	$this->getEventManager()->trigger(CartEvent::EVENT_EMPTY_CART_POST, $this, array('cart' => $cart));
 
         return $this;
     }
