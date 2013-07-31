@@ -19,6 +19,7 @@ class CartItemMapperZendDb extends AbstractDbMapper implements CartItemMapperInt
 {
     protected $tableName = 'cart_item';
     protected $itemIdField = 'item_id';
+    protected $parentItemIdField = 'parent_item_id';
 
     public function __construct()
     {
@@ -26,7 +27,7 @@ class CartItemMapperZendDb extends AbstractDbMapper implements CartItemMapperInt
         $this->setHydrator(new CartItemHydrator);
     }
 
-    public function findById($itemId)
+    public function findById($itemId, $populateChildren = true)
     {
         $select = new Select;
         $select->from($this->tableName);
@@ -35,8 +36,35 @@ class CartItemMapperZendDb extends AbstractDbMapper implements CartItemMapperInt
         $where->equalTo($this->itemIdField, $itemId);
 
         $resultSet = $this->select($select->where($where));
-        return $resultSet->current();
+        $item = $resultSet->current();
+
+        if ($populateChildren) {
+            $item->addItems($this->findByParentItemId($item->getCartItemId(), $populateChildren));
+        }
+
+        return $item;
     }
+
+    public function findByParentItemId($parentItemId, $populateChildren = true)
+    {
+        $select = new Select;
+        $select->from($this->tableName);
+
+        $where = new Where;
+        $where->equalTo($this->parentItemIdField, $parentItemId);
+
+        $resultSet = $this->select($select->where($where));
+        $items = array();
+        foreach ($resultSet as $result) {
+            if ($populateChildren) {
+                $result->addItems($this->findByParentItemId($result->getCartItemId()));
+            }
+            $items[] = $result;
+        }
+
+        return $items;
+    }
+
 
     public function findByCartId($cartId)
     {
