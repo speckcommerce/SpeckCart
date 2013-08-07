@@ -36,6 +36,16 @@ return array(
                             ),
                         ),
                     ),
+                    'update-quantities' => array(
+                        'type'    => 'Literal',
+                        'options' => array(
+                            'route'    => '/update-quantities',
+                            'defaults' => array(
+                                'controller' => 'speckcart',
+                                'action' => 'update-quantities',
+                            ),
+                        ),
+                    ),
                 ),
             ),
         ),

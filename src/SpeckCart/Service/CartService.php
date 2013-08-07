@@ -122,13 +122,13 @@ class CartService implements CartServiceInterface, EventManagerAwareInterface
         }
     }
 
-    public function removeItemFromCart($itemId, CartInterface $cart = null)
+    public function removeItemFromCart($itemId, CartInterface $cart = null, $recursive = false)
     {
         if ($cart === null) {
             $cart = $this->getSessionCart();
         }
 
-        $this->itemMapper->deleteById($itemId);
+        $this->itemMapper->deleteById($itemId, $recursive);
         $cart->removeItem($itemId);
 
         return $this;
@@ -143,12 +143,52 @@ class CartService implements CartServiceInterface, EventManagerAwareInterface
         $this->getEventManager()->trigger(CartEvent::EVENT_EMPTY_CART, $this, array('cart' => $cart));
 
         foreach($cart->getItems() as $item) {
-            $this->removeItemFromCart($item->getCartItemId(), $cart);
+            $this->removeItemFromCart($item->getCartItemId(), $cart, true);
         }
 
     	$this->getEventManager()->trigger(CartEvent::EVENT_EMPTY_CART_POST, $this, array('cart' => $cart));
 
         return $this;
+    }
+
+    public function updateQuantities($itemIdToQuantityArray)
+    {
+        $cart = $this->getSessionCart();
+
+        // Drive the update from the session cart rather than ids passed from client
+        foreach ($cart->getItems() as $cartItem) {
+            // Only try to update items that are in the cart
+            if (isset($itemIdToQuantityArray[$cartItem->getCartItemId()])) {
+                // If the new quantity is 0 we want to remove it from the cart entirely
+                if ($itemIdToQuantityArray[$cartItem->getCartItemId()] == 0) {
+                    $this->getEventManager()->trigger(CartEvent::EVENT_REMOVE_ITEM, $this, array('cart' => $cart));
+                    $this->removeItemFromCart($cartItem->getCartItemId(), $cart, true);
+                    $this->getEventManager()->trigger(CartEvent::EVENT_REMOVE_ITEM_POST, $this, array('cart' => $cart));
+                } else {
+                    // Fire an event to before updating quantities in cart (may be used for stock checking?)
+                    $this->getEventManager()->trigger(
+                        CartEvent::EVENT_UPDATE_QUATITY,
+                        $this,
+                        array('cart' => $cart)
+                    );
+
+                    // Set the quantity on the top level cart item and recursively apply the update
+                    $cartItem->setQuantity($itemIdToQuantityArray[$cartItem->getCartItemId()], true);
+
+                    // Save the cart items and all their children
+                    $this->persistItem($cartItem);
+                    $this->persistCartItemChildren($cartItem->getItems(), $cartItem, $cart);
+
+                    // Fire a post event as well
+                    $this->getEventManager()->trigger(
+                        CartEvent::EVENT_UPDATE_QUANTITY_POST,
+                        $this,
+                        array('cart' => $cart)
+                    );
+                }
+            }
+        }
+
     }
 
     public function attachDefaultListeners()

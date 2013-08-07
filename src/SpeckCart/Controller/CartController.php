@@ -33,6 +33,19 @@ class CartController extends AbstractActionController
         return $this->redirect()->toUrl('/cart');
     }
 
+    public function updateQuantitiesAction()
+    {
+        $prg = $this->prg('cart/update-quantities');
+
+        if ($prg instanceof Response) {
+            return $prg;
+        } elseif ($prg !== false) {
+            $this->getCartService()->updateQuantities($prg['quantities']);
+        }
+
+        return $this->_redirect()->toUrl('/cart');
+    }
+
     public function getCartService()
     {
         if (!isset($this->cartService)) {
