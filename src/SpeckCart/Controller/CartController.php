@@ -2,9 +2,10 @@
 
 namespace SpeckCart\Controller;
 
-use Zend\Mvc\Controller\AbstractActionController,
-    SpeckCart\Entity\CartItem,
-    Zend\View\Model\ViewModel;
+use Zend\Mvc\Controller\AbstractActionController;
+use SpeckCart\Entity\CartItem;
+use Zend\View\Model\ViewModel;
+use Zend\Http\PhpEnvironment\Response;
 
 class CartController extends AbstractActionController
 {
