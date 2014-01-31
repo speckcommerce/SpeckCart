@@ -13,7 +13,7 @@ class CartItem extends AbstractItemCollection implements CartItemInterface
     protected $quantity;
     protected $addedTime;
     protected $tax = 0;
-    protected $parentItemId = 0;
+    protected $parentItemId;
     protected $metadata;
 
     public function __construct(array $config = array())
@@ -90,10 +90,25 @@ class CartItem extends AbstractItemCollection implements CartItemInterface
         return $this->quantity;
     }
 
-    public function setQuantity($quantity)
+    public function setQuantity($quantity, $recursive = false)
     {
+        if ($recursive) {
+            foreach($this->getItems() as $child) {
+                $child->updateQuantityRecursive($quantity/$this->getQuantity());
+            }
+        }
+
         $this->quantity = $quantity;
         return $this;
+    }
+
+    public function updateQuantityRecursive($multiplier)
+    {
+        foreach ($this->getItems() as $child) {
+            $child->updatequantityRecursive($multiplier);
+        }
+
+        $this->quantity *= $multiplier;
     }
 
     public function getAddedTime()

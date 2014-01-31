@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS `cart_item` (
   `price` decimal(15,5) DEFAULT NULL,
   `tax` decimal(15,5) DEFAULT NULL,
   `added_time` datetime DEFAULT NULL,
-  `parent_item_id` int(11) DEFAULT 0,
+  `parent_item_id` int(11) DEFAULT NULL,
   `metadata` blob,
   PRIMARY KEY (`item_id`),
   KEY `cart_id` (`cart_id`)

@@ -90,8 +90,17 @@ class CartItemMapperZendDb extends AbstractDbMapper implements CartItemMapperInt
         return $resultSet;
     }
 
-    public function deleteById($cartItemId)
+    public function deleteById($cartItemId, $recursive = false)
     {
+        if ($recursive) {
+            $items = $this->findByParentItemId($cartItemId, true);
+
+            foreach ($items as $item) {
+                $this->deleteById($item->getCartItemId(), true);
+            }
+        }
+
+
         $sql = new Sql($this->getDbAdapter(), $this->tableName);
 
         $where = new Where;
