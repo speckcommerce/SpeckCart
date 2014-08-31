@@ -43,14 +43,13 @@ class CartTest extends PHPUnit_Framework_TestCase
         $cartItem = $cart->addProduct($descriptor, 1);
 
         $this->assertInstanceOf(CartItem::class, $cartItem);
-        $this->assertSame($descriptor, $cartItem->getDescriptor());
     }
 
     /**
      *
      * @covers ::addProduct
      */
-    public function testAddProductToCart()
+    public function testAddProductToCartActuallyAddsItem()
     {
         $unitPrice   = Money::USD(100);
         $descriptor  = new ProductDescriptor('ProductName', $unitPrice);
@@ -66,7 +65,7 @@ class CartTest extends PHPUnit_Framework_TestCase
      *
      * @covers ::addProduct
      */
-    public function testAddProductsWithSameDescriptorTwiceCreatesTwoItems()
+    public function testAddProductWithSameDescriptorUsedTwiceCreatesTwoItems()
     {
         $unitPrice   = Money::USD(100);
         $descriptor  = new ProductDescriptor('ProductName', $unitPrice);
@@ -79,6 +78,30 @@ class CartTest extends PHPUnit_Framework_TestCase
         $this->assertCount(2, $cart);
         $this->assertNotSame($cartItem1, $cartItem2);
         $this->assertEquals([$cartItem1, $cartItem2], $cart->getItems());
+    }
+
+    public function testAddProductPassesDescriptorToItem()
+    {
+        $unitPrice = Money::USD(100);
+        $descriptor = new ProductDescriptor('ProductName', $unitPrice);
+
+        $cart = new Cart();
+
+        $cartItem = $cart->addProduct($descriptor, 5);
+
+        $this->assertEquals($descriptor, $cartItem->getDescriptor());
+    }
+
+    public function testAddProductPassesQtyToItem()
+    {
+        $unitPrice = Money::USD(100);
+        $descriptor = new ProductDescriptor('ProductName', $unitPrice);
+
+        $cart = new Cart();
+
+        $cartItem = $cart->addProduct($descriptor, 5);
+
+        $this->assertEquals(5, $cartItem->getQuantity());
     }
 
 }
