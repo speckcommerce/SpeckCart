@@ -103,15 +103,4 @@ class CartTest extends PHPUnit_Framework_TestCase
         $this->assertNull($cart->getItem($cartItem1->getId()));
         $this->assertSame($cartItem2, $cart->getItem($cartItem2->getId()));
     }
-
-    public function testEmptyCart()
-    {
-        $cart = new Cart();
-        $cartItem1 = $cart->addProduct($this->descriptor, 1);
-        $cartItem2 = $cart->addProduct($this->descriptor, 1);
-
-        $cart->emptyCart();
-
-        $this->assertCount(0, $cart);
-    }
 }

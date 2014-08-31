@@ -11,6 +11,7 @@ namespace Speckcommerce\Cart\Domain;
 
 use InvalidArgumentException;
 use DomainException;
+use Rhumsaa\Uuid\Uuid;
 
 class CartItem
 {
@@ -22,23 +23,15 @@ class CartItem
 
     public function __construct(CartInterface $cart, ProductDescriptorInterface $descriptor, $qty)
     {
-        // @todo consider referencing cart by id and use UUID as cart id
+        $this->id = Uuid::uuid4();
         $this->cart = $cart;
         $this->descriptor = $descriptor;
         $this->setQuantity($qty);
     }
 
-    public function setId($id)
-    {
-        if (null != $this->id) {
-            throw new DomainException('Id was already assigned');
-        }
-        $this->id = $id;
-    }
-
     public function getId()
     {
-        return $this->id;
+        return new CartItemId($this->id);
     }
 
     public function getCart()

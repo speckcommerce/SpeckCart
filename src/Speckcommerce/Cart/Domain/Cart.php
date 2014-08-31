@@ -11,15 +11,14 @@ namespace Speckcommerce\Cart\Domain;
 
 use Speckcommerce\Cart\Domain\Specification\AcceptableItemQuantity;
 use RuntimeException;
+use Rhumsaa\Uuid\Uuid;
 
 class Cart implements CartInterface
 {
     /**
-     * @var integer
      *
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="uuid")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     protected $id;
 
@@ -39,28 +38,27 @@ class Cart implements CartInterface
      */
     protected $items = array();
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    protected $nextItemId = 1;
+    public function __construct()
+    {
+        $this->id = Uuid::uuid4();
+    }
 
     public function getId()
     {
-        return $this->id;
+        return new CartId($this->id);
     }
 
     public function addProduct(ProductDescriptorInterface $descriptor, $qty)
     {
         $cartItem = new CartItem($this, $descriptor, $qty);
-        // @todo decide if this is good approach vs UUID vs identity generation on persistence
-        $cartItem->setId($this->nextItemId++);
-        $this->items[$cartItem->getId()] = $cartItem;
+        $this->items[(string)$cartItem->getId()] = $cartItem;
 
         return $cartItem;
     }
 
-    public function getItem($id)
+    public function getItem(CartItemId $id)
     {
+        $id = (string) $id;
         if (isset($this->items[$id])) {
             return $this->items[$id];
         }
@@ -72,14 +70,10 @@ class Cart implements CartInterface
         return array_values($this->items);
     }
 
-    public function removeItem($itemId)
+    public function removeItem(CartItemId $id)
     {
-        unset($this->items[$itemId]);
-    }
-
-    public function emptyCart()
-    {
-        $this->items = array();
+        $id = (string) $id;
+        unset($this->items[$id]);
     }
 
     public function count()
