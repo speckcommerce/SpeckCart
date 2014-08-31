@@ -43,7 +43,7 @@ class CartItem
      * setQuantity
      *
      * @param int $qty
-     * @throws InvalidArgumentException if quantity is less than 1
+     * @throws InvalidArgumentException if quantity is not positive integer
      */
     public function setQuantity($qty)
     {

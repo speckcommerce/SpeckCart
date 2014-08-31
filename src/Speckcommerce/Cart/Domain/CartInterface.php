@@ -18,14 +18,14 @@ interface CartInterface extends Countable
      *
      * @param ProductDescriptor $descriptor
      * @param int $qty
-     * @return CartItem
+     * @return CartItemInterface
      */
     public function addProduct(ProductDescriptorInterface $descriptor, $qty);
 
     /**
      * Returns items in the cart
      *
-     * @return CartItem[]
+     * @return CartItemInterface[]
      */
     public function getItems();
 }
