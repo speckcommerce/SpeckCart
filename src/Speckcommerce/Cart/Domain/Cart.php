@@ -23,7 +23,7 @@ class Cart implements CartInterface
      */
     protected $id;
 
-    /*
+    /**
      * Optimistic concurrency lock
      * @ORM\Column(type="integer") @Version
      */
