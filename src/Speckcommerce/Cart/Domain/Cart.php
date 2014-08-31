@@ -9,7 +9,30 @@
 
 namespace Speckcommerce\Cart\Domain;
 
-class Cart
-{
+use InvalidArgumentException;
 
+class Cart implements CartInterface
+{
+    protected $items = array();
+
+    public function addProduct(ProductDescriptorInterface $descriptor, $qty)
+    {
+        if (!is_int($qty) || $qty < 1) {
+            throw new InvalidArgumentException('Quantity must be positive integer');
+        }
+        $cartItem = new CartItem($this, $descriptor, $qty);
+        $this->items[] = $cartItem;
+
+        return $cartItem;
+    }
+
+    public function count()
+    {
+        return count($this->items);
+    }
+
+    public function getItems()
+    {
+        return $this->items;
+    }
 }

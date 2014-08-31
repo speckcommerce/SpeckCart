@@ -9,7 +9,7 @@
 
 namespace Speckcommerce\Cart\Domain;
 
-class ProductDescriptor implements ProductDescriptorInterface
+interface ProductDescriptorInterface
 {
 
 }
