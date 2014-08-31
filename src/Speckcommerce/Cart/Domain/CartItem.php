@@ -22,6 +22,7 @@ class CartItem
 
     public function __construct(CartInterface $cart, ProductDescriptorInterface $descriptor, $qty)
     {
+        // @todo consider referencing cart by id and use UUID as cart id
         $this->cart = $cart;
         $this->descriptor = $descriptor;
         $this->setQuantity($qty);
