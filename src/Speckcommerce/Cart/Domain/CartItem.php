@@ -10,10 +10,13 @@
 namespace Speckcommerce\Cart\Domain;
 
 use InvalidArgumentException;
+use DomainException;
 
 class CartItem
 {
     protected $cart;
+    protected $id;
+
     protected $descriptor;
     protected $qty;
 
@@ -22,6 +25,19 @@ class CartItem
         $this->cart = $cart;
         $this->descriptor = $descriptor;
         $this->setQuantity($qty);
+    }
+
+    public function setId($id)
+    {
+        if (null != $this->id) {
+            throw new DomainException('Id was already assigned');
+        }
+        $this->id = $id;
+    }
+
+    public function getId()
+    {
+        return $this->id;
     }
 
     public function getCart()

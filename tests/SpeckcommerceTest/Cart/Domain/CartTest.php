@@ -104,4 +104,21 @@ class CartTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(5, $cartItem->getQuantity());
     }
 
+    public function testRemoveItem()
+    {
+        $unitPrice = Money::USD(100);
+        $descriptor = new ProductDescriptor('ProductName', $unitPrice);
+
+        $cart = new Cart();
+
+        $cartItem1 = $cart->addProduct($descriptor, 1);
+        $cartItem2 = $cart->addProduct($descriptor, 1);
+
+        $cart->removeItem($cartItem1->getId());
+
+        $this->assertCount(1, $cart);
+
+        $this->assertNull($cart->getItem($cartItem1->getId()));
+        $this->assertSame($cartItem2, $cart->getItem($cartItem2->getId()));
+    }
 }

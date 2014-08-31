@@ -28,6 +28,13 @@ interface CartItemInterface
     public function getCart();
 
     /**
+     * Item identity locally unique
+     *
+     * @return int
+     */
+    public function getId();
+
+    /**
      *
      * @return ProductDescriptorInterface
      */
