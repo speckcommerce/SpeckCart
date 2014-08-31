@@ -44,6 +44,11 @@ class Cart implements CartInterface
      */
     protected $nextItemId = 1;
 
+    public function getId()
+    {
+        return $this->id;
+    }
+
     public function addProduct(ProductDescriptorInterface $descriptor, $qty)
     {
         $cartItem = new CartItem($this, $descriptor, $qty);
@@ -54,16 +59,6 @@ class Cart implements CartInterface
         return $cartItem;
     }
 
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    public function getItems()
-    {
-        return array_values($this->items);
-    }
-
     public function getItem($id)
     {
         if (isset($this->items[$id])) {
@@ -72,9 +67,19 @@ class Cart implements CartInterface
         return null;
     }
 
+    public function getItems()
+    {
+        return array_values($this->items);
+    }
+
     public function removeItem($itemId)
     {
         unset($this->items[$itemId]);
+    }
+
+    public function emptyCart()
+    {
+        $this->items = array();
     }
 
     public function count()
