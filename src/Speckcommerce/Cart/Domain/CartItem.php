@@ -36,7 +36,7 @@ class CartItem
 
     public function getCart()
     {
-        return $cart;
+        return $this->cart;
     }
 
     /**

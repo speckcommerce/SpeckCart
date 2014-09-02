@@ -27,6 +27,6 @@ class CartItemId
 
     public static function fromString($uuid)
     {
-        return new static(Uuid::fromString($id));
+        return new static(Uuid::fromString($uuid));
     }
 }
