@@ -23,7 +23,10 @@ class CartItem
 
     public function __construct(CartInterface $cart, ProductDescriptorInterface $descriptor, $qty)
     {
-        $this->id = Uuid::uuid4();
+        // Id can be generated inside cart and be unique across it.
+        // @todo I shall revisit current approach when i will have chance
+        // to benchmark both approaches in production scale scenarios.
+        $this->id = Uuid::uuid4()->toString();
         $this->cart = $cart;
         $this->descriptor = $descriptor;
         $this->setQuantity($qty);
@@ -31,7 +34,7 @@ class CartItem
 
     public function getId()
     {
-        return new CartItemId($this->id);
+        return $this->id;
     }
 
     public function getCart()
@@ -50,7 +53,9 @@ class CartItem
     }
 
     /**
-     * setQuantity
+     * Set quantity
+     *
+     * @internal Use Cart to modify item quantity.
      *
      * @param int $qty
      * @throws InvalidArgumentException if quantity is not positive integer

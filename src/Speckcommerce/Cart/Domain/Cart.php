@@ -17,7 +17,7 @@ class Cart implements CartInterface
 {
     /**
      *
-     * @ORM\Column(type="uuid")
+     * @ORM\Column(type="guid")
      * @ORM\Id
      */
     protected $id;
@@ -40,25 +40,24 @@ class Cart implements CartInterface
 
     public function __construct()
     {
-        $this->id = Uuid::uuid4();
+        $this->id = Uuid::uuid4()->toString();
     }
 
     public function getId()
     {
-        return new CartId($this->id);
+        return $this->id;
     }
 
     public function addProduct(ProductDescriptorInterface $descriptor, $qty)
     {
         $cartItem = new CartItem($this, $descriptor, $qty);
-        $this->items[(string)$cartItem->getId()] = $cartItem;
+        $this->items[$cartItem->getId()] = $cartItem;
 
         return $cartItem;
     }
 
-    public function getItem(CartItemId $id)
+    public function getItem($id)
     {
-        $id = (string) $id;
         if (isset($this->items[$id])) {
             return $this->items[$id];
         }
@@ -70,9 +69,8 @@ class Cart implements CartInterface
         return array_values($this->items);
     }
 
-    public function removeItem(CartItemId $id)
+    public function removeItem($id)
     {
-        $id = (string) $id;
         unset($this->items[$id]);
     }
 

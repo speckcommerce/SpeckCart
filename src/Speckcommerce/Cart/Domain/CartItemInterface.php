@@ -43,6 +43,8 @@ interface CartItemInterface
     /**
      * Set quantity
      *
+     * @internal Use Cart to modify item quantity.
+     *
      * @param int $qty
      * @throws InvalidArgumentException if quantity is not positive integer
      */
