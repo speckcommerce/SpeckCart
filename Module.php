@@ -18,7 +18,7 @@ class Module implements AutoloaderProviderInterface
         return array(
             'Zend\Loader\StandardAutoloader' => array(
                 'namespaces' => array(
-                    __NAMESPACE__ => __DIR__ . '/src/SpeckCommerce/Cart',
+                    __NAMESPACE__ => __DIR__ . '/src/Speckcommerce/Cart',
                 ),
             ),
         );

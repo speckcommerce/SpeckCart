@@ -9,10 +9,18 @@
 
 namespace Speckcommerce\Cart\Domain;
 
-use Speckcommerce\Cart\Domain\Specification\AcceptableItemQuantity;
-use RuntimeException;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 use Rhumsaa\Uuid\Uuid;
+use RuntimeException;
 
+/**
+ * Cart
+ *
+ * @ORM\Table(name="cart")
+ * @ORM\Entity
+ */
 class Cart implements CartInterface
 {
     /**
@@ -24,23 +32,28 @@ class Cart implements CartInterface
 
     /**
      * Optimistic concurrency lock
-     * @ORM\Column(type="integer") @Version
+     * @ORM\Column(type="integer")
+     * @ORM\Version
      */
     protected $version;
 
     /**
+     *
      * @ORM\OneToMany(
      *   targetEntity="CartItem",
-     *   mappedBy="???",
+     *   mappedBy="cart",
      *   orphanRemoval=true,
      *   cascade={"persist", "remove", "merge"}
      * )
+     *
+     * @var Collection|CartItemInterface[]
      */
-    protected $items = array();
+    protected $items;
 
     public function __construct()
     {
         $this->id = Uuid::uuid4()->toString();
+        $this->items = new ArrayCollection();
     }
 
     public function getId()
@@ -66,12 +79,16 @@ class Cart implements CartInterface
 
     public function getItems()
     {
-        return array_values($this->items);
+        return $this->items->toArray();
     }
 
-    public function removeItem($id)
+    public function removeItem($itemOrId)
     {
-        unset($this->items[$id]);
+        if ($itemOrId instanceof CartItemInterface) {
+            $itemOrId = $itemOrId->getId();
+        }
+
+        return $this->items->remove($itemOrId);
     }
 
     public function count()
