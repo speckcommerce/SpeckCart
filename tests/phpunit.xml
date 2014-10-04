@@ -1,11 +1,20 @@
-<phpunit bootstrap="./Bootstrap.php" colors="true">
-    <testsuites>
-        <testsuite name="SpeckCart Test Suite">
-            <directory>./SpeckCartTest</directory>
-        </testsuite>
-    </testsuites>
+<?xml version="1.0"?>
+<phpunit
+    bootstrap="../vendor/autoload.php"
+    colors="true"
+    convertErrorsToExceptions="true"
+    convertNoticesToExceptions="true"
+    convertWarningsToExceptions="true"
+    stopOnFailure="false"
+    processIsolation="false"
+    backupGlobals="false"
+    syntaxCheck="true"
+>
+    <testsuite name="Speckcommerce Cart tests">
+        <directory>./SpeckcommerceTest</directory>
+    </testsuite>
     <filter>
-        <whitelist>
+        <whitelist addUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">../src</directory>
         </whitelist>
     </filter>

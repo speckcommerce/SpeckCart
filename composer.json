@@ -1,24 +1,33 @@
 {
     "name": "speckcommerce/speck-cart",
-    "description": "",
+    "description": "SpeckCommerce project cart module",
+    "license": "BSD-2-Clause",
     "type": "library",
     "keywords": [
-        "zf2"
+        "zf2",
+        "speckcommerce",
+        "cart"
     ],
     "homepage": "http://github.com/speckcommerce/SpeckCart",
     "authors": [
     ],
     "require": {
-        "php": ">=5.4",
-        "zendframework/zendframework": "2.*"
+        "php": ">=5.5",
+        "beberlei/assert": "~2.0",
+        "doctrine/orm": "~2.4",
+        "mathiasverraes/money": "~1.2",
+        "rhumsaa/uuid": "~2.7",
+        "zendframework/zendframework": "~2.3"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "4.1.*"
     },
     "autoload": {
         "psr-0": {
-            "SpeckCart": "src/"
+            "Speckcommerce\\Cart": "src/"
         },
         "classmap": [
-            "./"
+            "./Module.php"
         ]
     }
 }
-
