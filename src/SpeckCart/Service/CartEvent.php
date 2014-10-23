@@ -20,6 +20,7 @@ class CartEvent extends Event
     const EVENT_EMPTY_CART_POST      = 'emptyCart.post';
     const EVENT_UPDATE_QUATITY       = 'updateQuantities';
     const EVENT_UPDATE_QUANTITY_POST = 'updateQuantities.post';
+    const EVENT_RETRIEVE_CART_POST   = 'retrieveCart.post';
 
     public function setCartItem(CartItemInterface $cartItem)
     {
