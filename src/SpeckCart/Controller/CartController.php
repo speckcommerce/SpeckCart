@@ -31,7 +31,7 @@ class CartController extends AbstractActionController
             $cs->emptyCart();
         }
 
-        return $this->redirect()->toUrl('/cart');
+        return $this->redirect()->toRoute('cart');
     }
 
     public function updateQuantitiesAction()
@@ -44,7 +44,7 @@ class CartController extends AbstractActionController
             $this->getCartService()->updateQuantities($prg['quantities']);
         }
 
-        return $this->_redirect()->toUrl('/cart');
+        return $this->redirect()->toRoute('cart');
     }
 
     public function getCartService()
