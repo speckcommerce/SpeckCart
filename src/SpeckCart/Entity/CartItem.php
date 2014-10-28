@@ -64,16 +64,13 @@ class CartItem extends AbstractItemCollection implements CartItemInterface
         return $this;
     }
 
-    public function getPrice($recursive = false)
+    public function getPrice($includeTax=false, $recursive=false)
     {
-        if (false === $recursive) {
-            return $this->price;
-        }
+        $price = $this->price + ($includeTax ? $this->getTax() : 0);
 
-        $price = $this->price;
-        if (count($this->getItems()) > 0) {
+        if ($recursive) {
             foreach ($this->getItems() as $item) {
-                $price = $price + $item->getPrice(true);
+                $price += $item->getPrice($includeTax, $recursive);
             }
         }
         return $price;
@@ -124,38 +121,25 @@ class CartItem extends AbstractItemCollection implements CartItemInterface
 
     public function getExtPrice($includeTax=true, $recursive=false)
     {
-        $price = 0;
-        if($includeTax) {
-            $price = ($this->getPrice() + $this->getTax()) * $this->getQuantity();
-        } else {
-            $price = $this->getPrice() * $this->getQuantity();
-        }
-
-        if($recursive) {
-            foreach($this->getItems() as $item) {
-                $price += $item->getExtPrice($includeTax, $recursive);
-            }
-        }
-
-        return $price;
+        return $this->getPrice($includeTax, $recursive) * $this->getQuantity();
     }
 
     public function getExtTax($recursive=false)
     {
-        $price = $this->getTax() * $this->getQuantity();
+        return $this->getTax($recursive) * $this->getQuantity();
+    }
+
+    public function getTax($recursive=false)
+    {
+        $tax = $this->tax;
 
         if($recursive) {
             foreach($this->getItems() as $item) {
-                $price += $item->getExtTax($recursive);
+                $tax += $item->getTax($recursive);
             }
         }
 
-        return $price;
-    }
-
-    public function getTax()
-    {
-        return $this->tax;
+        return $tax;
     }
 
     public function setTax($tax)
