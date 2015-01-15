@@ -95,4 +95,9 @@ class Cart implements CartInterface
     {
         return count($this->items);
     }
+
+    public function getIterator()
+    {
+        return $this->items->getIterator();
+    }
 }

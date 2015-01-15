@@ -10,8 +10,9 @@
 namespace Speckcommerce\Cart\Domain;
 
 use Countable;
+use IteratorAggregate;
 
-interface CartInterface extends Countable
+interface CartInterface extends Countable, IteratorAggregate
 {
     /**
      * Adds product to cart
