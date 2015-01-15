@@ -32,7 +32,7 @@ class CartTest extends PHPUnit_Framework_TestCase
     {
         $cart = new Cart();
         $this->assertCount(0, $cart);
-        $this->assertEquals([], $cart->getItems());
+        $this->assertEmpty($cart->getItems());
     }
 
     /**
@@ -56,8 +56,8 @@ class CartTest extends PHPUnit_Framework_TestCase
         $cart = new Cart();
         $cartItem = $cart->addProduct($this->descriptor, 2);
 
-        $this->assertEquals(1, count($cart));
-        $this->assertEquals([$cartItem], $cart->getItems());
+        $this->assertCount(1, $cart);
+        $this->assertContains($cartItem, $cart->getItems());
     }
 
     /**
@@ -72,7 +72,8 @@ class CartTest extends PHPUnit_Framework_TestCase
 
         $this->assertCount(2, $cart);
         $this->assertNotSame($cartItem1, $cartItem2);
-        $this->assertEquals([$cartItem1, $cartItem2], $cart->getItems());
+        $this->assertContains($cartItem1, $cart->getItems());
+        $this->assertContains($cartItem2, $cart->getItems());
     }
 
     public function testAddProductPassesDescriptorToItem()
