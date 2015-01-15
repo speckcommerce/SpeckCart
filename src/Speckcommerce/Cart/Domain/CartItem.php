@@ -9,37 +9,33 @@
 
 namespace Speckcommerce\Cart\Domain;
 
-use Doctrine\ORM\Mapping as ORM;
 use DomainException;
 use InvalidArgumentException;
 use Rhumsaa\Uuid\Uuid;
 
-/**
- *
- * @ORM\Table(name="cart_item")
- * @ORM\Entity
- */
 class CartItem
 {
     /**
      *
-     * @ORM\ManyToOne(targetEntity="Cart", inversedBy="items")
      * @var CartInterface
      */
     protected $cart;
 
     /**
+     * id
      *
-     * @ORM\Column(type="guid")
-     * @ORM\Id
+     * @var string
      */
     protected $id;
 
+    /**
+     *
+     * @var ProductDescriptorInterface
+     */
     protected $descriptor;
 
     /**
      *
-     * @ORM\Column(type="integer")
      * @var integer
      */
     protected $qty;

@@ -11,40 +11,19 @@ namespace Speckcommerce\Cart\Domain;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
 use Rhumsaa\Uuid\Uuid;
 use RuntimeException;
 
-/**
- * Cart
- *
- * @ORM\Table(name="cart")
- * @ORM\Entity
- */
 class Cart implements CartInterface
 {
     /**
+     * id
      *
-     * @ORM\Column(type="guid")
-     * @ORM\Id
+     * @var string
      */
     protected $id;
 
     /**
-     * Optimistic concurrency lock
-     * @ORM\Column(type="integer")
-     * @ORM\Version
-     */
-    protected $version;
-
-    /**
-     *
-     * @ORM\OneToMany(
-     *   targetEntity="CartItem",
-     *   mappedBy="cart",
-     *   orphanRemoval=true,
-     *   cascade={"persist", "remove", "merge"}
-     * )
      *
      * @var Collection|CartItemInterface[]
      */

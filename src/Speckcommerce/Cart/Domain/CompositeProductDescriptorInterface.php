@@ -9,11 +9,6 @@
 
 namespace Speckcommerce\Cart\Domain;
 
-/**
- * Composite descriptor of arbitrary depth for representation of complex
- * configurable products
- *
- */
 interface CompositeProductDescriptorInterface extends ProductDescriptorInterface
 {
 
