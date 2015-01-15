@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <phpunit
-    bootstrap="../vendor/autoload.php"
+    bootstrap="vendor/autoload.php"
     colors="true"
     convertErrorsToExceptions="true"
     convertNoticesToExceptions="true"
@@ -11,11 +11,11 @@
     syntaxCheck="true"
 >
     <testsuite name="Speckcommerce Cart tests">
-        <directory>./SpeckcommerceTest</directory>
+        <directory>./tests/SpeckcommerceTest</directory>
     </testsuite>
     <filter>
         <whitelist addUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">../src</directory>
+            <directory suffix=".php">./src</directory>
         </whitelist>
     </filter>
 </phpunit>
