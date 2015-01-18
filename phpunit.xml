@@ -1,13 +1,15 @@
 <?xml version="1.0"?>
 <phpunit
     bootstrap="vendor/autoload.php"
+    backupGlobals="false"
     colors="true"
     convertErrorsToExceptions="true"
     convertNoticesToExceptions="true"
     convertWarningsToExceptions="true"
-    stopOnFailure="false"
+    forceCoversAnnotation="true"
     processIsolation="false"
-    backupGlobals="false"
+    stopOnFailure="false"
+    strict="false"
     syntaxCheck="true"
 >
     <testsuite name="Speckcommerce Cart tests">
