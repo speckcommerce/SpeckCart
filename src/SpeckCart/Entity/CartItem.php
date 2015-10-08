@@ -121,12 +121,28 @@ class CartItem extends AbstractItemCollection implements CartItemInterface
 
     public function getExtPrice($includeTax=true, $recursive=false)
     {
-        return $this->getPrice($includeTax, $recursive) * $this->getQuantity();
+        $price =  $this->getPrice($includeTax, false) * $this->getQuantity();
+
+        if($recursive) {
+            foreach($this->getItems() as $item) {
+                $price += $item->getExtPrice($includeTax, $recursive);
+            }
+        }
+
+        return $price;
     }
 
     public function getExtTax($recursive=false)
     {
-        return $this->getTax($recursive) * $this->getQuantity();
+        $tax = $this->getTax(false) * $this->getQuantity();
+
+        if($recursive) {
+            foreach($this->getItems() as $item) {
+                $tax += $item->getExtTax($recursive);
+            }
+        }
+
+        return $tax;
     }
 
     public function getTax($recursive=false)
@@ -168,10 +184,5 @@ class CartItem extends AbstractItemCollection implements CartItemInterface
     {
         $this->metadata = $metadata;
         return $this;
-    }
-
-    public function removeItem($item)
-    {
-        throw new \Exception("not implemented");
     }
 }
