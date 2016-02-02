@@ -16,8 +16,12 @@ class Module implements AutoloaderProviderInterface
 {
     public function getServiceConfig()
     {
-        return array(
-            'factories' => array(
+        return [
+            'invokables' => [
+                'speckcart_entity_cartitem' => '\SpeckCart\Entity\CartItem',
+                'speckcart_hydrator_cartitem' => '\SpeckCart\Mapper\CartItemHydrator'
+            ],
+            'factories' => [
                 'SpeckCart\Service\CartService' => function($sm) {
                     $service = new Service\CartService;
                     $service->setItemMapper($sm->get('SpeckCart\Mapper\CartItemMapperZendDb'));
@@ -34,12 +38,15 @@ class Module implements AutoloaderProviderInterface
                 },
 
                 'SpeckCart\Mapper\CartItemMapperZendDb' => function($sm) {
-                    $mapper = new Mapper\CartItemMapperZendDb;
+                    $mapper = new Mapper\CartItemMapperZendDb(
+                        $sm->get('speckcart_entity_cartitem'),
+                        $sm->get('speckcart_hydrator_cartitem'));
+
                     $mapper->setDbAdapter($sm->get('speckcart_db_adapter'));
                     return $mapper;
                 },
-            ),
-        );
+            ],
+        ];
     }
 
     public function getAutoloaderConfig()

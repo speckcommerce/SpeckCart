@@ -3,7 +3,6 @@
 namespace SpeckCart\Mapper;
 
 use SpeckCart\Entity\CartItem;
-use Zend\Stdlib\Hydrator\HydratorInterface;
 
 class CartItemRecursiveHydrator extends CartItemHydrator
 {
@@ -19,7 +18,13 @@ class CartItemRecursiveHydrator extends CartItemHydrator
         $result = array();
 
         foreach ($data as $row) {
-            $item = $this->hydrateSingle($row, new CartItem);
+            if(!$object) {
+                $cloneObject = new CartItem;
+            } else {
+                $cloneObject = clone $object;
+            }
+
+            $item = $this->hydrateSingle($row, $cloneObject);
 
             if (!$item->getParentItemId()) {
                 $result[] = $item;
@@ -31,16 +36,18 @@ class CartItemRecursiveHydrator extends CartItemHydrator
 
     protected function hydrateSingle(array $data, $object)
     {
+        $cloneObject = clone $object;
+
         if (isset($this->index[ $data['item_id'] ])) {
             $this->index[ $data['item_id'] ]['hydrated'] = true;
             return $this->index[ $data['item_id'] ]['object'];
         }
 
         if (isset($this->index[ $data['item_id'] ])) {
-            $object = $this->index[ $data['item_id'] ]['object'];
+            $cloneObject = $this->index[ $data['item_id'] ]['object'];
         }
 
-        $item = parent::hydrate($data, $object);
+        $item = parent::hydrate($data, $cloneObject);
 
         $this->index[ $data['item_id'] ] = array(
             'object'    => $item,
@@ -48,7 +55,7 @@ class CartItemRecursiveHydrator extends CartItemHydrator
         );
 
         if ($data['parent_item_id']) {
-            $parent = $this->getParent($data['parent_item_id']);
+            $parent = $this->getParent($data['parent_item_id'], $object);
             $item->setParent($parent);
             $parent->addItem($item);
         }
@@ -56,25 +63,29 @@ class CartItemRecursiveHydrator extends CartItemHydrator
         return $item;
     }
 
-    protected function getParent($id)
+    protected function getParent($id, $object=null)
     {
         if (isset($this->index[$id]) && $this->index[$id]['object'] !== null) {
             return $this->index[$id]['object'];
         } else {
-            return $this->addPrototype($id);
+            return $this->addPrototype($id, $object);
         }
     }
 
-    protected function addPrototype($id)
+    protected function addPrototype($id, $object=null)
     {
-        $object = new CartItem;
-        $object->setCartItemId($id);
+        if(isset($object)) {
+            $cloneObject = clone $object;
+        } else {
+            $cloneObject = new CartItem;
+        }
 
+        $cloneObject->setCartItemId($id);
         $this->index[$id] = array(
-            'object' => $object,
+            'object' => $cloneObject,
             'hydrated' => false
         );
 
-        return $object;
+        return $cloneObject;
     }
 }
