@@ -112,5 +112,6 @@ abstract class AbstractItemCollection implements ItemCollectionInterface
     public function setParent($parent)
     {
         $this->parent = $parent;
+        return $this;
     }
 }
